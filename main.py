@@ -1,0 +1,117 @@
+import sys
+import colours as colour
+import map
+import keys_and_input
+import entities
+import brezelheim
+import door
+import replay as logging
+import messagebox
+import screen
+import randomness
+import time
+
+
+class GateToGods:
+    def __init__(self, mapname: str, seed: int, log_filename: str):
+        self.maps = []
+        self.colours = colour.Colours()
+        self.player = entities.Player(-1, -1, "@", 5, 40, 5, 5)
+        self.maps.append(map.Map(mapname, self.player))
+        self.current_level = self.maps[0]
+        self.rng = randomness.Randomness(seed)
+        self.brezel = brezelheim.Brezelheim(self.current_level)
+        self.msg_box = messagebox.Messagebox()  # inits the messagebox to be able to show messages triggered in game
+        self.scr = screen.Screen(21, 81)  # inits the size of the screen used to display the game
+        self.keys = keys_and_input.Input()  # inits the input keys
+        self.log_filename = log_filename
+        self.log_file = None
+
+    def prepare_new_map(self):
+        self.brezel.reset_brezelheim(self.current_level)
+        self.current_level.build_map_colour(self.brezel, self.player, self.colours)
+
+    def play(self):
+        playing = True
+        skip_npc_turn = False
+        record = False
+
+        if self.log_filename != "":
+            self.log_file = open(self.log_filename)
+            record = True
+
+        self.prepare_new_map()
+
+        while playing:
+            self.scr.print(record, self)
+            pressed_key = input()
+
+            playing, skip_npc_turn = self.player_turn(pressed_key, playing, skip_npc_turn)
+            if playing:
+                if not skip_npc_turn:
+                    self.current_level.npc_actions(self.player, self.brezel, self.msg_box, self.colours, self.rng)
+                else:
+                    skip_npc_turn = False
+                self.current_level.build_map_colour(self.brezel, self.player, self.colours)
+                if not self.player.is_alive():
+                    self.scr.print(record, gtg)
+                    playing = False
+                else:
+                    pass
+
+    def player_turn(self, pressed_key: str, playing: bool, skip_npc_turn: bool):
+        if pressed_key == self.keys.exit_game:
+            playing = False
+        elif pressed_key == self.keys.open_door or pressed_key == self.keys.close_door:
+            door.door_actions(pressed_key, self.player, self.keys, self.msg_box, self.current_level)
+        elif self.player.move(pressed_key, self.keys, self.current_level) == -1:
+            if not door.auto_toggle(self.player, self.keys, pressed_key, self.msg_box, self.current_level):
+                self.player.attack(self.current_level.npcs, self.keys, pressed_key, self.msg_box, self.colours, self.rng)
+        elif pressed_key == self.keys.enter_entrance or pressed_key == self.keys.enter_exit:
+            entrance = self.current_level.find_entrance(self)
+            if entrance is not None:
+                entrance.enter(self)
+            skip_npc_turn = True
+        elif pressed_key == self.keys.toggle_beautiful_mode:
+            self.colours.toggle_beautiful_colours()
+            skip_npc_turn = True
+        return playing, skip_npc_turn
+
+
+def interpret_parameters():
+    filename = ""
+    set_seed = time.time()
+    save_replay = False
+    play_replay = False
+    for instance in range(len(sys.argv)):
+        if sys.argv[instance] == "-log" or sys.argv[instance] == "-l":
+            filename = sys.argv[instance + 1]
+            save_replay = True
+        elif sys.argv[instance] == "-view" or sys.argv[instance] == "-v":
+            filename = sys.argv[instance + 1]
+            play_replay = True
+        elif sys.argv[instance] == "-seed" or sys.argv[instance] == "-s":
+            try:
+                set_seed = int(sys.argv[instance + 1])
+            except ValueError:
+                pass
+    return save_replay, play_replay, filename, set_seed
+
+
+def get_level_file_name():
+    if len(sys.argv) > 1:
+        return sys.argv[1]
+    else:
+        return ""
+
+
+if __name__ == '__main__':
+    record, replay, replay_filename, seed = interpret_parameters()
+    level_file_name = get_level_file_name()
+    if not replay:
+        gtg = GateToGods(level_file_name, seed, replay_filename)
+        gtg.play()
+    else:
+        colours = colour.Colours()
+        r = logging.Replay(replay_filename, colours)
+        r.play_replay(keys_and_input.Input(), colours)
