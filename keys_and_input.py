@@ -20,6 +20,7 @@ class Input:
         self.enter_exit = "<"
         self.enter_entrance = ">"
         self.toggle_beautiful_mode = "b"
+        self.show_coordinates = "#"
 
     def get_direction_value(self, pressed_key: str, pos_y: int, pos_x: int):
         if pressed_key == self.move_left_0 or pressed_key == self.move_left_1:

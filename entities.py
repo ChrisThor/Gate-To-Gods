@@ -9,6 +9,7 @@ class Entity:
         self.max_hp = hp
         self.minimum_damage = minimum_damage
         self.maximum_damage = maximum_damage
+        self.show_coordinates = False
         self.alive = True
 
     def change_hp(self, difference, msg, colours):
@@ -44,8 +45,10 @@ class Player(Entity):
             colour = colours.get_colour("white")
 
         reciever.write(colour + "HP: " + str(self.hp).rjust(len(str(self.max_hp))) + "/" +
-                       str(self.max_hp) + "\n")
-        reciever.write(colours.get_colour("white"))
+                       str(self.max_hp))
+        if self.show_coordinates:
+            reciever.write("\tX: " + str(self.pos_x) + " Y: " + str(self.pos_y).ljust(4, " "))
+        reciever.write("\n" + colours.get_colour("white"))
         scr.print_separator(reciever)
 
     def move(self, key, keys, level):
