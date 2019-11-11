@@ -37,7 +37,7 @@ class GateToGods:
         record = False
 
         if self.log_filename != "":
-            self.log_file = open(self.log_filename)
+            self.log_file = open(self.log_filename, "w")
             record = True
 
         self.prepare_new_map()
