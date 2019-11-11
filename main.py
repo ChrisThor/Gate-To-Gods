@@ -21,8 +21,8 @@ class GateToGods:
         self.current_level = self.maps[0]
         self.rng = randomness.Randomness(seed)
         self.brezel = brezelheim.Brezelheim(self.current_level)
-        self.msg_box = messagebox.Messagebox()  # inits the messagebox to be able to show messages triggered in game
         self.scr = screen.Screen(21, 81)  # inits the size of the screen used to display the game
+        self.msg_box = messagebox.Messagebox(self.scr.len_x)
         self.keys = keys_and_input.Input()  # inits the input keys
         self.log_filename = log_filename
         self.log_file = None
