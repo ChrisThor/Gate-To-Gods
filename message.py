@@ -1,13 +1,11 @@
 class Message:
-    def __init__(self, content="", length=0):
+    def __init__(self, content="", colour_code_length=0):
         self.content = content
-        if length == 0:
-            self.length = len(content)
-        else:
-            self.length = length
+        self.colour_code_length = colour_code_length
+        self.length = len(content)
 
-    def fill(self, width):
-        if len(self.content) > width:
-            self.content = self.content.ljust(2 * width - self.length, " ")
+    def fill(self, width, colour_mode):
+        if colour_mode:
+            self.content = self.content.ljust(width + self.colour_code_length, " ")
         else:
             self.content = self.content.ljust(width, " ")
