@@ -1,6 +1,6 @@
-import door
-import entrance
-import non_player_character
+from door import Door
+from entrance import Entrance
+from non_player_character import NonPlayerCharacter
 
 
 class Map:
@@ -64,13 +64,13 @@ class Map:
                     player.pos_y = pos_y
                     player.pos_x = pos_x
                 elif "Person" in line:
-                    self.npcs.append(non_player_character.NonPlayerCharacter(pos_y, pos_x, "p", "Person", 3, 40, 10, 10))
+                    self.npcs.append(NonPlayerCharacter(pos_y, pos_x, "p", "Person", 3, 40, 10, 10))
                 elif "Drunkard" in line:
-                    self.npcs.append(non_player_character.NonPlayerCharacter(pos_y, pos_x, "E", "Betrunkener", 5, 10, 1, 1))
+                    self.npcs.append(NonPlayerCharacter(pos_y, pos_x, "E", "Betrunkener", 5, 10, 1, 1))
                 elif "PrairieDog" in line:
-                    self.npcs.append(non_player_character.NonPlayerCharacter(pos_y, pos_x, "E", "Präriehund", 4, 20, 1, 2))
+                    self.npcs.append(NonPlayerCharacter(pos_y, pos_x, "E", "Präriehund", 4, 20, 1, 2))
                 elif "Door" in line:
-                    self.doors.append(door.Door(pos_y, pos_x, "closed"))
+                    self.doors.append(Door(pos_y, pos_x, "closed"))
                 elif "Entrance" in line:
                     self.init_entrance(line, pos_x, pos_y, ">")
                 elif "Exit" in line:
@@ -84,7 +84,7 @@ class Map:
         map_name = line.split(":")[3]
         if "\n" in map_name:
             map_name = map_name[:-1]
-        self.entrances_and_exits.append(entrance.Entrance(pos_y, pos_x, map_name, symbol))
+        self.entrances_and_exits.append(Entrance(pos_y, pos_x, map_name, symbol))
 
     def find_entrance(self, gtg):
         for entrance in self.entrances_and_exits:

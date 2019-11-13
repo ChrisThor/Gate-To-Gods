@@ -1,28 +1,28 @@
 import sys
-import colours as colour
-import map
-import keys_and_input
-import brezelheim
-import player
-import replay as logging
-import messagebox
-import screen
-import randomness
+from colours import Colours
+from map import Map
+from keys_and_input import Input
+from brezelheim import Brezelheim
+from player import Player
+from replay import Replay
+from messagebox import Messagebox
+from screen import Screen
+from randomness import Randomness
 import time
 
 
 class GateToGods:
     def __init__(self, mapname: str, seed: int, log_filename: str):
         self.maps = []
-        self.colours = colour.Colours()
-        self.player = player.Player(-1, -1, "@", 5, 40, 5, 5)
-        self.maps.append(map.Map(mapname, self.player))
+        self.colours = Colours()
+        self.player = Player(-1, -1, "@", 5, 40, 5, 5)
+        self.maps.append(Map(mapname, self.player))
         self.current_level = self.maps[0]
-        self.rng = randomness.Randomness(seed)
-        self.brezel = brezelheim.Brezelheim(self.current_level)
-        self.scr = screen.Screen(21, 81)  # inits the size of the screen used to display the game
-        self.msg_box = messagebox.Messagebox(self.scr.len_x)
-        self.keys = keys_and_input.Input()  # inits the input keys
+        self.rng = Randomness(seed)
+        self.brezel = Brezelheim(self.current_level)
+        self.scr = Screen(21, 81)  # inits the size of the screen used to display the game
+        self.msg_box = Messagebox(self.scr.len_x)
+        self.keys = Input()  # inits the input keys
         self.log_filename = log_filename
         self.log_file = None
 
@@ -119,5 +119,5 @@ if __name__ == '__main__':
         gtg.play()
     else:
         colours = colour.Colours()
-        r = logging.Replay(replay_filename, colours)
-        r.play_replay(keys_and_input.Input(), colours)
+        r = Replay(replay_filename, colours)
+        r.play_replay(Input(), colours)
