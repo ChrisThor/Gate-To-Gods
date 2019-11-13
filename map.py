@@ -171,7 +171,7 @@ class Map:
 
     def npc_actions(self, player, brezelheim, msg, colours, rng):
         for npc in self.npcs:
-            if npc.visible[player.pos_y][player.pos_x] and npc.is_alive():
+            if npc.visible[player.pos_y][player.pos_x] and npc.is_alive() and player.is_alive():
                 if brezelheim.check_distance(npc.pos_y - player.pos_y, npc.pos_x - player.pos_x, 1.5):
                     npc.attack_player(player, msg, colours, rng)
                 else:
