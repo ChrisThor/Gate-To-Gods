@@ -60,6 +60,8 @@ class Messagebox:
         self.update_messagebox(colours.beautiful_colours)
 
     def attack_player(self, player, npc, damage, colours):
+        if damage > player.hp:
+            damage = player.hp
         if colours.beautiful_colours:
             message = colours.get_colour("yellow") + npc.name + colours.get_colour("white") + \
                                " greift dich an. Du verlierst " + colours.get_colour("red") + \
