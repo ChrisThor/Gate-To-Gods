@@ -44,6 +44,7 @@ class Map:
             exit(-1)
 
         loopstate = 0
+        player_defined = False
         for line in level_file:
             if line == "---\n":
                 loopstate = 1
@@ -59,6 +60,7 @@ class Map:
                 pos_y = int(parts[1].split(")")[0])
                 pos_x = int(parts[0].split("(")[1])
                 if "Player" in line:
+                    player_defined = True
                     player.pos_y = pos_y
                     player.pos_x = pos_x
                 elif "Person" in line:
@@ -73,7 +75,9 @@ class Map:
                     self.init_entrance(line, pos_x, pos_y, ">")
                 elif "Exit" in line:
                     self.init_entrance(line, pos_x, pos_y, "<")
-
+        if not player_defined and player.pos_x == -1 and player.pos_y == -1:
+            print("Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.")
+            exit(-1)
         level_file.close()
 
     def init_entrance(self, line, pos_x, pos_y, symbol):

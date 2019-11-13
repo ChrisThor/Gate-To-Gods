@@ -107,7 +107,8 @@ def get_level_file_name():
     if len(sys.argv) > 1:
         return sys.argv[1]
     else:
-        return ""
+        print("Geben Sie als ersten Parameter das Level an, das geöffnet werden soll.")
+        exit(0)
 
 
 if __name__ == '__main__':
