@@ -134,6 +134,8 @@ class Person(Entity):
     def attack_player(self, player, msg, colours, rng):
         if self.aggressive:
             damage = rng.next_random_number(self.minimum_damage, self.maximum_damage)
+            if damage > player.hp:
+                damage = player.hp
             msg.attack_player(player, self, damage, colours)
             player.change_hp(damage, msg, colours)
 
