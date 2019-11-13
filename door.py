@@ -32,22 +32,3 @@ class Door:
             return True
         else:
             return False
-
-
-def door_actions(pressed_key, player, keys, msg, level):
-    result = -1
-    for y in range(player.pos_y - 1, player.pos_y + 2):
-        for x in range(player.pos_x - 1, player.pos_x + 2):
-            for door in level.doors:
-                if door.confirm_pos(y, x) and not x == y == 0:
-                    result += door.interact_with_door(pressed_key, keys, msg, player, level.npcs)
-    return result
-
-
-def auto_toggle(player, keys, pressed_key, msg, level):
-    pos_y, pos_x = keys.get_direction_value(pressed_key, player.pos_y, player.pos_x)
-    for door in level.doors:
-        if door.confirm_pos(pos_y, pos_x) and door.state == "closed":
-            door.interact_with_door(keys.open_door, keys, msg, player, level.npcs)
-            return True
-    return False

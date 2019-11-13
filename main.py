@@ -63,10 +63,11 @@ class GateToGods:
         if pressed_key == self.keys.exit_game:
             playing = False
         elif pressed_key == self.keys.open_door or pressed_key == self.keys.close_door:
-            door.door_actions(pressed_key, self.player, self.keys, self.msg_box, self.current_level)
+            self.current_level.door_actions(pressed_key, self)
         elif self.player.move(pressed_key, self.keys, self.current_level) == -1:
-            if not door.auto_toggle(self.player, self.keys, pressed_key, self.msg_box, self.current_level):
-                self.player.attack(self.current_level.npcs, self.keys, pressed_key, self.msg_box, self.colours, self.rng)
+            if not self.current_level.auto_toggle(self.player, self.keys, pressed_key, self.msg_box):
+                self.player.attack(self.current_level.npcs, self.keys, pressed_key, self.msg_box, self.colours,
+                                   self.rng)
         elif pressed_key == self.keys.enter_entrance or pressed_key == self.keys.enter_exit:
             entrance = self.current_level.find_entrance(self)
             if entrance is not None:

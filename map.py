@@ -176,3 +176,21 @@ class Map:
                     npc.attack_player(player, msg, colours, rng)
                 else:
                     npc.move(player, self)
+
+    def door_actions(self, pressed_key, gtg):
+        result = -1
+        for y in range(gtg.player.pos_y - 1, gtg.player.pos_y + 2):
+            for x in range(gtg.player.pos_x - 1, gtg.player.pos_x + 2):
+                for door in self.doors:
+                    if door.confirm_pos(y, x) and not x == y == 0:
+                        result += door.interact_with_door(pressed_key, gtg.keys, gtg.msg_box, gtg.player,
+                                                          self.npcs)
+        return result
+
+    def auto_toggle(self, player, keys, pressed_key, msg):
+        pos_y, pos_x = keys.get_direction_value(pressed_key, player.pos_y, player.pos_x)
+        for door in self.doors:
+            if door.confirm_pos(pos_y, pos_x) and door.state == "closed":
+                door.interact_with_door(keys.open_door, keys, msg, player, self.npcs)
+                return True
+        return False
