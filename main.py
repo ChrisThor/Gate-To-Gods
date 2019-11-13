@@ -118,6 +118,6 @@ if __name__ == '__main__':
         gtg = GateToGods(level_file_name, seed, replay_filename)
         gtg.play()
     else:
-        colours = colour.Colours()
+        colours = Colours()
         r = Replay(replay_filename, colours)
         r.play_replay(Input(), colours)

@@ -26,7 +26,7 @@ class Replay:
         position = 0
         command = ""
         while command != keys.exit_game:
-            # print(colours.jump_up())
+            print(colours.reset())
             for line in self.slides[position]:
                 print(line, end='')
             command = input(colours.get_colour("white") + "Frame " + str(position + 1) + "/" + str(len(self.slides)) +
