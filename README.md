@@ -1,4 +1,4 @@
-# GateToGods
+# Gate To Gods
 
 ### Getting started
 
