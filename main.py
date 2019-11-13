@@ -2,9 +2,8 @@ import sys
 import colours as colour
 import map
 import keys_and_input
-import entities
 import brezelheim
-import door
+import player
 import replay as logging
 import messagebox
 import screen
@@ -16,7 +15,7 @@ class GateToGods:
     def __init__(self, mapname: str, seed: int, log_filename: str):
         self.maps = []
         self.colours = colour.Colours()
-        self.player = entities.Player(-1, -1, "@", 5, 40, 5, 5)
+        self.player = player.Player(-1, -1, "@", 5, 40, 5, 5)
         self.maps.append(map.Map(mapname, self.player))
         self.current_level = self.maps[0]
         self.rng = randomness.Randomness(seed)

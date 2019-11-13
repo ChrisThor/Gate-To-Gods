@@ -1,6 +1,6 @@
-import entities
 import door
 import entrance
+import non_player_character
 
 
 class Map:
@@ -64,11 +64,11 @@ class Map:
                     player.pos_y = pos_y
                     player.pos_x = pos_x
                 elif "Person" in line:
-                    self.npcs.append(entities.Person(pos_y, pos_x, "p", "Person", 3, 40, 10, 10))
+                    self.npcs.append(non_player_character.NonPlayerCharacter(pos_y, pos_x, "p", "Person", 3, 40, 10, 10))
                 elif "Drunkard" in line:
-                    self.npcs.append(entities.Person(pos_y, pos_x, "E", "Betrunkener", 5, 10, 1, 1))
+                    self.npcs.append(non_player_character.NonPlayerCharacter(pos_y, pos_x, "E", "Betrunkener", 5, 10, 1, 1))
                 elif "PrairieDog" in line:
-                    self.npcs.append(entities.Person(pos_y, pos_x, "E", "Präriehund", 4, 20, 1, 2))
+                    self.npcs.append(non_player_character.NonPlayerCharacter(pos_y, pos_x, "E", "Präriehund", 4, 20, 1, 2))
                 elif "Door" in line:
                     self.doors.append(door.Door(pos_y, pos_x, "closed"))
                 elif "Entrance" in line:
