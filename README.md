@@ -2,7 +2,9 @@
 
 ### Getting started
 
-To start the game, Python 3 needs to be installed. Select the file "main.py" and start it with a parameter, which is the map that will first be opened by the game.
+To start the game, Python 3 needs to be installed. 
+Additionally, a console that support ANSI escape codes like [Aniscon](https://github.com/adoxa/ansicon) is recommended.
+Select the file "main.py" and start it with a parameter, which is the map that will first be opened by the game.
 
 Additionally, it is possible to use additional parameters. Gate To Gods uses a Random Number Generator (RNG) that uses a seed.
 If you add `-seed` or `-s` behind the map, you can set the seed the RNG will use.
