@@ -3,7 +3,6 @@ from colours import Colours
 from map import Map
 from keys_and_input import Input
 from brezelheim import Brezelheim
-from player import Player
 from default_entity import DefaultEntity
 from replay import Replay
 from messagebox import Messagebox
