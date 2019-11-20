@@ -21,7 +21,7 @@ class Entrance:
                 skip = True
                 break
         if not skip:
-            new_level = map.Map(self.linked_map, gtg.player)
+            new_level = map.Map(self.linked_map, gtg)
             for entrance in new_level.entrances_and_exits:
                 if entrance.linked_map == gtg.current_level.name:
                     gtg.player.pos_y = entrance.pos_y

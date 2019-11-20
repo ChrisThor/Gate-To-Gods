@@ -1,10 +1,9 @@
 from door import Door
 from entrance import Entrance
-from non_player_character import NonPlayerCharacter
 
 
 class Map:
-    def __init__(self, file, player):
+    def __init__(self, file, gtg):
         self.len_y = 0
         self.len_x = 0
         self.name = file
@@ -17,7 +16,7 @@ class Map:
         self.doors = []
         self.npcs = []
         self.entrances_and_exits = []
-        self.open_map(file, player)
+        self.open_map(file, gtg)
         self.init_tile_visibility()
 
     def init_tile_visibility(self):
@@ -35,7 +34,7 @@ class Map:
                 colours_x.append(colours.get_colour("grey"))
             self.colours.append(colours_x)
 
-    def open_map(self, file, player):
+    def open_map(self, file, gtg):
         level_file = ""
         try:
             level_file = open(file, "r")
@@ -61,21 +60,22 @@ class Map:
                 pos_x = int(parts[0].split("(")[1])
                 if "Player" in line:
                     player_defined = True
-                    player.pos_y = pos_y
-                    player.pos_x = pos_x
-                elif "Person" in line:
-                    self.npcs.append(NonPlayerCharacter(pos_y, pos_x, "p", "Person", 3, 40, 10, 10))
-                elif "Drunkard" in line:
-                    self.npcs.append(NonPlayerCharacter(pos_y, pos_x, "E", "Betrunkener", 5, 10, 1, 1))
-                elif "PrairieDog" in line:
-                    self.npcs.append(NonPlayerCharacter(pos_y, pos_x, "E", "Präriehund", 4, 20, 1, 2))
+                    gtg.player.pos_y = pos_y
+                    gtg.player.pos_x = pos_x
                 elif "Door" in line:
                     self.doors.append(Door(pos_y, pos_x, "closed"))
                 elif "Entrance" in line:
                     self.init_entrance(line, pos_x, pos_y, ">")
                 elif "Exit" in line:
                     self.init_entrance(line, pos_x, pos_y, "<")
-        if not player_defined and player.pos_x == -1 and player.pos_y == -1:
+                else:
+                    entity_id = line.split(":")[2].replace("\n", "")
+                    entity = gtg.set_entity(entity_id, pos_y, pos_x)
+                    if entity is None:
+                        print("Das Entity \"" + entity_id + "\" ist in der Datei \"units.dat\" nicht definiert.")
+                        exit(-1)
+                    self.npcs.append(entity)
+        if not player_defined and gtg.player.pos_x == -1 and gtg.player.pos_y == -1:
             print("Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.")
             exit(-1)
         level_file.close()

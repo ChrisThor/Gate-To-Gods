@@ -1,9 +1,11 @@
+# -*- coding: cp852 -*-
 import sys
 from colours import Colours
 from map import Map
 from keys_and_input import Input
 from brezelheim import Brezelheim
 from player import Player
+from default_entity import DefaultEntity
 from replay import Replay
 from messagebox import Messagebox
 from screen import Screen
@@ -14,9 +16,11 @@ import time
 class GateToGods:
     def __init__(self, mapname: str, seed: int, log_filename: str):
         self.maps = []
+        self.default_entities = []
+        self.read_units_dat()
         self.colours = Colours()
-        self.player = Player(-1, -1, "@", 5, 40, 5, 5)
-        self.maps.append(Map(mapname, self.player))
+        self.player = self.set_entity("Player", -1, -1)
+        self.maps.append(Map(mapname, self))
         self.current_level = self.maps[0]
         self.rng = Randomness(seed)
         self.brezel = Brezelheim(self.current_level)
@@ -25,6 +29,82 @@ class GateToGods:
         self.keys = Input()  # inits the input keys
         self.log_filename = log_filename
         self.log_file = None
+
+    def read_units_dat(self):
+        try:
+            units_file = open("data/units.dat", "r")
+            valid_units_file = True
+
+            lines = units_file.readlines()
+            line = 0
+            while line < len(lines):
+                id = lines[line].split(":")[0]
+                name = ""
+                hp = -1
+                minimum_damage = -1
+                maximum_damage = -1
+                range_of_vision = -1
+                aggression = False
+                line += 1
+                while line < len(lines) and lines[line][0] == " ":
+                    if "healthPoints" in lines[line]:
+                        try:
+                            hp = lines[line].split(":")[1]
+                            hp = int(hp)
+                        except ValueError:
+                            print("Zeile", line, "von \"units.dat\" ist fehlerhaft: ", hp, "ist keine Zahl.")
+                            valid_units_file = False
+                    elif "damage" in lines[line]:
+                        try:
+                            if "-" in lines[line]:
+                                minimum_damage = int(lines[line].split("(")[1].split("-")[0])
+                                maximum_damage = int(lines[line].split("-")[1].split(")")[0])
+                            else:
+                                minimum_damage = int(lines[line].split("(")[1].split(")")[0])
+                                maximum_damage = minimum_damage
+                        except ValueError:
+                            print("Zeile", line, "von \"units.dat\" ist fehlerhaft: Bitte ÅberprÅfe die Schadenszahl.")
+                            valid_units_file = False
+                    elif "fieldOfVision" in lines[line]:
+                        try:
+                            range_of_vision = lines[line].split(":")[1]
+                            range_of_vision = int(range_of_vision)
+                        except ValueError:
+                            print("Zeile", line, "von \"units.dat\" ist fehlerhaft: ", range_of_vision, "ist keine Zahl"
+                                                                                                        ".")
+                            valid_units_file = False
+                    elif "hostile" in lines[line]:
+                        if "false" in lines[line] or "False" in lines[line]:
+                            aggression = False
+                        elif "true" in lines[line] or "True" in lines[line]:
+                            aggression = True
+                    elif "name" in lines[line]:
+                        name = lines[line].split(":")[1].replace("\n", "")
+                        while name[0] == " ":
+                            name = name[1:]     # if a blank is in front of a name, it gets removed
+                    line += 1
+                if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
+                    print("Die Definition des Entity, das Åber Zeile", line, "definiert wurde, ist unvollstÑndig.")
+                    print(lines[line])
+                    print("Name: " + name + "\tHP: " + str(hp) + "\tSchaden:", minimum_damage, maximum_damage, "\tFOV:",
+                          range_of_vision)
+                    exit(-1)
+                else:
+                    self.default_entities.append(DefaultEntity(id, name, range_of_vision, hp, minimum_damage,
+                                                               maximum_damage, aggression))
+                    if line >= len(lines):
+                        return
+            if not valid_units_file:
+                exit(-1)
+        except FileNotFoundError:
+            print("Die Datei \"units.dat\", welche Informationen zu allen Entities beinhaltet, konnte nicht gefunden "
+                  "werden.")
+
+    def set_entity(self, id, pos_y, pos_x):
+        for entity in self.default_entities:
+            if entity.id == id:
+                return entity.create(pos_y, pos_x)
+        return None
 
     def prepare_new_map(self):
         self.brezel.reset_brezelheim(self.current_level)
@@ -107,7 +187,7 @@ def get_level_file_name():
     if len(sys.argv) > 1:
         return sys.argv[1]
     else:
-        print("Geben Sie als ersten Parameter das Level an, das ge√∂ffnet werden soll.")
+        print("Geben Sie als ersten Parameter das Level an, das geîffnet werden soll.")
         exit(0)
 
 
