@@ -1,4 +1,3 @@
-# -*- coding: cp852 -*-
 import sys
 from colours import Colours
 from map import Map
@@ -63,7 +62,7 @@ class GateToGods:
                                 minimum_damage = int(lines[line].split("(")[1].split(")")[0])
                                 maximum_damage = minimum_damage
                         except ValueError:
-                            print("Zeile", line, "von \"units.dat\" ist fehlerhaft: Bitte berprfe die Schadenszahl.")
+                            print("Zeile", line, "von \"units.dat\" ist fehlerhaft: Bitte Ã¼berprÃ¼fe die Schadenszahl.")
                             valid_units_file = False
                     elif "fieldOfVision" in lines[line]:
                         try:
@@ -84,9 +83,8 @@ class GateToGods:
                             name = name[1:]     # if a blank is in front of a name, it gets removed
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
-                    print("Die Definition des Entity, das ber Zeile", line, "definiert wurde, ist unvollst„ndig.")
-                    print(lines[line])
-                    print("Name: " + name + "\tHP: " + str(hp) + "\tSchaden:", minimum_damage, maximum_damage, "\tFOV:",
+                    print("Die Definition des Entity, das Ã¼ber Zeile", line, "definiert wurde, ist unvollstÃ¤ndig.")
+                    print("Name: \"" + name + "\"\tHP: " + str(hp) + "\tSchaden:", minimum_damage, maximum_damage, "\tFOV:",
                           range_of_vision)
                     exit(-1)
                 else:
@@ -187,7 +185,7 @@ def get_level_file_name():
     if len(sys.argv) > 1:
         return sys.argv[1]
     else:
-        print("Geben Sie als ersten Parameter das Level an, das ge”ffnet werden soll.")
+        print("Geben Sie als ersten Parameter das Level an, das geâ€ffnet werden soll.")
         exit(0)
 
 
