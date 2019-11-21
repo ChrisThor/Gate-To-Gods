@@ -14,7 +14,7 @@ PrairieDog:
   damage: (1-2)
   fieldOfVision: 4
   hostile: true
-  name: Pr√§riehund
+  name: Pr‰riehund
 Drunkard:
   healthPoints: 10
   damage: (1)
