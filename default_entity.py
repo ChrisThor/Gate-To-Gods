@@ -3,8 +3,8 @@ from player import Player
 
 
 class DefaultEntity:
-    def __init__(self, id: str, name: str, range_of_vision: int, hp: int, minimum_damage: int, maximum_damage: int, aggressive: bool):
-        self.id = id
+    def __init__(self, entity_id: str, name: str, range_of_vision: int, hp: int, minimum_damage: int, maximum_damage: int, aggressive: bool):
+        self.id = entity_id
         self.name = name
         self.range_of_vision = range_of_vision
         self.hp = hp

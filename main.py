@@ -32,11 +32,14 @@ class GateToGods:
         try:
             units_file = open("data/units.dat", "r")
             valid_units_file = True
+            player_defined = False
 
             lines = units_file.readlines()
             line = 0
             while line < len(lines):
-                id = lines[line].split(":")[0]
+                entity_id = lines[line].split(":")[0]
+                if "Player" in entity_id:
+                    player_defined = True
                 name = ""
                 hp = -1
                 minimum_damage = -1
@@ -87,10 +90,13 @@ class GateToGods:
                           range_of_vision)
                     exit(-1)
                 else:
-                    self.default_entities.append(DefaultEntity(id, name, range_of_vision, hp, minimum_damage,
+                    self.default_entities.append(DefaultEntity(entity_id, name, range_of_vision, hp, minimum_damage,
                                                                maximum_damage, aggression))
                     if line >= len(lines):
                         return
+            if not player_defined:
+                print("Das Spiel kann nicht starten, weil der Spieler in \"units.dat\" nicht definiert ist.")
+                exit(-1)
             if not valid_units_file:
                 exit(-1)
         except FileNotFoundError:
