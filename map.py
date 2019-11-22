@@ -58,23 +58,25 @@ class Map:
                 parts = line.split("/")
                 pos_y = int(parts[1].split(")")[0])
                 pos_x = int(parts[0].split("(")[1])
-                if "Player" in line:
-                    player_defined = True
-                    gtg.player.pos_y = pos_y
-                    gtg.player.pos_x = pos_x
+
+                if line[0] == "U":
+                    if "Player" in line:
+                        player_defined = True
+                        gtg.player.pos_y = pos_y
+                        gtg.player.pos_x = pos_x
+                    else:
+                        entity_id = line.split(":")[2].replace("\n", "")
+                        entity = gtg.set_entity(entity_id, pos_y, pos_x)
+                        if entity is None:
+                            print("Das Entity \"" + entity_id + "\" ist in der Datei \"units.dat\" nicht definiert.")
+                            exit(-1)
+                        self.npcs.append(entity)
                 elif "Door" in line:
                     self.doors.append(Door(pos_y, pos_x, "closed"))
                 elif "Entrance" in line:
                     self.init_entrance(line, pos_x, pos_y, ">")
                 elif "Exit" in line:
                     self.init_entrance(line, pos_x, pos_y, "<")
-                else:
-                    entity_id = line.split(":")[2].replace("\n", "")
-                    entity = gtg.set_entity(entity_id, pos_y, pos_x)
-                    if entity is None:
-                        print("Das Entity \"" + entity_id + "\" ist in der Datei \"units.dat\" nicht definiert.")
-                        exit(-1)
-                    self.npcs.append(entity)
         if not player_defined and gtg.player.pos_x == -1 and gtg.player.pos_y == -1:
             print("Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.")
             exit(-1)
