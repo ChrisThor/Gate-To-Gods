@@ -20,5 +20,5 @@ class DefaultEntity:
             symbol = "E"
         else:
             symbol = "p"
-        return NonPlayerCharacter(pos_y, pos_x, symbol, self.name, self.range_of_vision, self.hp, self.minimum_damage,
+        return NonPlayerCharacter(pos_y, pos_x, symbol, self.aggressive, self.name, self.range_of_vision, self.hp, self.minimum_damage,
                                   self.maximum_damage)

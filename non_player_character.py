@@ -2,13 +2,10 @@ from entity import Entity
 
 
 class NonPlayerCharacter(Entity):
-    def __init__(self, pos_y, pos_x, symbol, name, range_of_vision, hp, minimum_damage, maximum_damage):
+    def __init__(self, pos_y, pos_x, symbol, aggressive, name, range_of_vision, hp, minimum_damage, maximum_damage):
         Entity.__init__(self, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage)
         self.name = name
-        if symbol == "E":
-            self.aggressive = True
-        elif symbol == "p":
-            self.aggressive = False
+        self.aggressive = aggressive
         self.visible = []
 
     def kill(self, msg, colours):
