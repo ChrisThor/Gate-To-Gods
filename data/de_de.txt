@@ -1,0 +1,16 @@
+no_level_parameter=Geben Sie als ersten Parameter das Level an, das geöffnet werden soll.
+unitsdat_number_error=Zeile (LINE) von "units.dat" ist fehlerhaft: (NOT_A_NUMBER) ist keine Zahl.
+unitsdat_damage_error=Zeile (LINE) von "units.dat" ist fehlerhaft: Überprüfe bitte die Schadenszahl.
+unitsdat_incomplete_definition=Die Definition des Entity "(ENTITY_ID)" ist unvollständig.
+unitsdat_player_not_defined=Das Spiel kann nicht starten, weil der Spieler in "units.dat" nicht definiert ist.
+unitsdat_not_found=Die Datei "units.dat", welche Informationen zu allen Entities beinhaltet, konnte nicht gefunden werden.
+level_file_not_found=Die Datei "(FILE)", welche das Level enthält, welches geladen werden soll, konnte nicht gefunden werden.
+level_entity_not_defined=Das Entity "(ENTITY_ID)" ist in der Datei "units.dat" nicht definiert.
+level_player_not_defined=Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.
+attack_npc_message=Du greifst (NPC_NAME) mit (PLAYER_DAMAGE) Schaden an. (NPC_NAME) hat (NPC_HP) Lebenspunkte übrig.
+attack_player_message=(NPC_NAME) greift dich an. Du verlierst (NPC_DAMAGE) von (PLAYER_HP) Lebenspunkten.
+npc_death_message=(NPC_NAME) sackt bewusstlos zusammen.
+player_death_message=Du wurdest überwältigt.
+cannot_close_door_message=Die Türe kann nicht geschlossen werden.
+close_door_message=Du schließt eine Tür.
+open_door_message=Du öffnest eine Tür.

@@ -39,7 +39,8 @@ class Map:
         try:
             level_file = open(file, "r")
         except FileNotFoundError:
-            print("Die Datei \"" + file + "\" konnte nicht gefunden werden.")
+            print(gtg.language.level_file_not_found.replace("(FILE)", file))
+            # print("Die Datei \"" + file + "\" konnte nicht gefunden werden.")
             exit(-1)
 
         loopstate = 0
@@ -68,7 +69,8 @@ class Map:
                         entity_id = line.split(":")[2].replace("\n", "")
                         entity = gtg.set_entity(entity_id, pos_y, pos_x)
                         if entity is None:
-                            print("Das Entity \"" + entity_id + "\" ist in der Datei \"units.dat\" nicht definiert.")
+                            print(gtg.language.level_entity_not_defined.replace("(ENTITY_ID)", entity_id))
+                            # print("Das Entity \"" + entity_id + "\" ist in der Datei \"units.dat\" nicht definiert.")
                             exit(-1)
                         self.npcs.append(entity)
                 elif "Door" in line:
@@ -78,7 +80,8 @@ class Map:
                 elif "Exit" in line:
                     self.init_entrance(line, pos_x, pos_y, "<")
         if not player_defined and gtg.player.pos_x == -1 and gtg.player.pos_y == -1:
-            print("Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.")
+            print(gtg.language.level_player_not_defined)
+            # print("Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.")
             exit(-1)
         level_file.close()
 
@@ -171,28 +174,27 @@ class Map:
                 return True
         return False
 
-    def npc_actions(self, player, brezelheim, msg, colours, rng):
+    def npc_actions(self, gtg):
         for npc in self.npcs:
-            if npc.visible[player.pos_y][player.pos_x] and npc.is_alive() and player.is_alive():
-                if brezelheim.check_distance(npc.pos_y - player.pos_y, npc.pos_x - player.pos_x, 1.5):
-                    npc.attack_player(player, msg, colours, rng)
+            if npc.visible[gtg.player.pos_y][gtg.player.pos_x] and npc.is_alive() and gtg.player.is_alive():
+                if gtg.brezelheim.check_distance(npc.pos_y - gtg.player.pos_y, npc.pos_x - gtg.player.pos_x, 1.5):
+                    npc.attack_player(gtg)
                 else:
-                    npc.move(player, self)
+                    npc.move(gtg.player, self)
 
-    def door_actions(self, pressed_key, gtg):
+    def door_actions(self, gtg, pressed_key):
         result = -1
         for y in range(gtg.player.pos_y - 1, gtg.player.pos_y + 2):
             for x in range(gtg.player.pos_x - 1, gtg.player.pos_x + 2):
                 for door in self.doors:
                     if door.confirm_pos(y, x) and not x == y == 0:
-                        result += door.interact_with_door(pressed_key, gtg.keys, gtg.msg_box, gtg.player,
-                                                          self.npcs)
+                        result += door.interact_with_door(gtg, pressed_key)
         return result
 
-    def auto_toggle(self, player, keys, pressed_key, msg):
-        pos_y, pos_x = keys.get_direction_value(pressed_key, player.pos_y, player.pos_x)
+    def auto_toggle(self, gtg, pressed_key):
+        pos_y, pos_x = gtg.keys.get_direction_value(pressed_key, gtg.player.pos_y, gtg.player.pos_x)
         for door in self.doors:
             if door.confirm_pos(pos_y, pos_x) and door.state == "closed":
-                door.interact_with_door(keys.open_door, keys, msg, player, self.npcs)
+                door.interact_with_door(gtg, gtg.keys.open_door)
                 return True
         return False

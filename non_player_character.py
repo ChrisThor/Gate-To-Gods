@@ -8,17 +8,17 @@ class NonPlayerCharacter(Entity):
         self.aggressive = aggressive
         self.visible = []
 
-    def kill(self, msg, colours):
+    def kill(self, gtg):
         self.alive = False
-        msg.npc_death(colours, self)
+        gtg.msg_box.npc_death(gtg, self)
 
-    def change_hp(self, difference, msg, colours):
+    def change_hp(self, gtg, difference):
         if not self.aggressive:
             self.aggressive = True
         self.hp -= difference
         if self.hp <= 0 and self.alive:
             self.hp = 0
-            self.kill(msg, colours)
+            self.kill(gtg)
 
     def move(self, player, level):
         if self.is_alive() and self.aggressive:
@@ -53,13 +53,13 @@ class NonPlayerCharacter(Entity):
                 self.pos_y = new_y
                 self.pos_x = new_x
 
-    def attack_player(self, player, msg, colours, rng):
+    def attack_player(self, gtg):
         if self.aggressive:
-            damage = rng.next_random_number(self.minimum_damage, self.maximum_damage)
-            if damage > player.hp:
-                damage = player.hp
-            msg.attack_player(player, self, damage, colours)
-            player.change_hp(damage, msg, colours)
+            damage = gtg.rng.next_random_number(self.minimum_damage, self.maximum_damage)
+            if damage > gtg.player.hp:
+                damage = gtg.player.hp
+            gtg.msg_box.attack_player_m(gtg, self, damage)
+            gtg.player.change_hp(gtg, damage)
 
     def confirm_pos(self, pos_y, pos_x):
         if self.pos_y == pos_y and self.pos_x == pos_x:

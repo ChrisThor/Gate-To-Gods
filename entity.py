@@ -12,13 +12,13 @@ class Entity:
         self.show_coordinates = False
         self.alive = True
 
-    def change_hp(self, difference, msg, colours):
+    def change_hp(self, gtg, difference):
         self.hp -= difference
         if self.hp <= 0 and self.alive:
             self.hp = 0
-            self.kill(msg, colours)
+            self.kill(gtg)
 
-    def kill(self, msg, colours):
+    def kill(self, gtg):
         self.alive = False
 
     def is_alive(self):

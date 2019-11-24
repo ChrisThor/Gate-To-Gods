@@ -28,14 +28,14 @@ class Player(Entity):
         else:
             return -1
 
-    def kill(self, msg, colours):
+    def kill(self, gtg):
         self.alive = False
-        msg.player_death(colours)
+        gtg.msg_box.player_death(gtg)
 
-    def attack(self, npcs, keys, pressed_key, msg, colours, rng):
-        pos_y, pos_x = keys.get_direction_value(pressed_key, self.pos_y, self.pos_x)
-        for npc in npcs:
+    def attack(self, gtg, pressed_key):
+        pos_y, pos_x = gtg.keys.get_direction_value(pressed_key, self.pos_y, self.pos_x)
+        for npc in gtg.current_level.npcs:
             if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
-                damage = rng.next_random_number(self.minimum_damage, self.maximum_damage)
-                msg.attack_npc(damage, npc, colours)
-                npc.change_hp(damage, msg, colours)
+                damage = gtg.rng.next_random_number(self.minimum_damage, self.maximum_damage)
+                gtg.msg_box.attack_npc(gtg, damage, npc)
+                npc.change_hp(gtg, damage)
