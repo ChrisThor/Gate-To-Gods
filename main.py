@@ -13,10 +13,11 @@ import time
 
 
 class GateToGods:
-    def __init__(self, mapname: str, seed: int, log_filename: str):
+    def __init__(self, seed: int, log_filename: str):
         self.maps = []
         self.default_entities = []
         self.language = LanguageManagement()
+        mapname = get_level_file_name(self.language)
         self.read_units_dat()
         self.colours = Colours()
         self.player = self.set_entity("Player", -1, -1)
@@ -182,19 +183,18 @@ def interpret_parameters():
     return save_replay, play_replay, filename, set_seed
 
 
-def get_level_file_name():
+def get_level_file_name(language):
     if len(sys.argv) > 1:
         return sys.argv[1]
     else:
-        print("Geben Sie als ersten Parameter das Level an, das geöffnet werden soll.")
+        print(language.no_level_parameter)
         exit(0)
 
 
 if __name__ == '__main__':
     record, replay, replay_filename, seed = interpret_parameters()
-    level_file_name = get_level_file_name()
     if not replay:
-        gtg = GateToGods(level_file_name, seed, replay_filename)
+        gtg = GateToGods(seed, replay_filename)
         gtg.play()
     else:
         colours = Colours()
