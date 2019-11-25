@@ -40,7 +40,6 @@ class Map:
             level_file = open(file, "r")
         except FileNotFoundError:
             print(gtg.language.level_file_not_found.replace("(FILE)", file))
-            # print("Die Datei \"" + file + "\" konnte nicht gefunden werden.")
             exit(-1)
 
         loopstate = 0
@@ -70,7 +69,6 @@ class Map:
                         entity = gtg.set_entity(entity_id, pos_y, pos_x)
                         if entity is None:
                             print(gtg.language.level_entity_not_defined.replace("(ENTITY_ID)", entity_id))
-                            # print("Das Entity \"" + entity_id + "\" ist in der Datei \"units.dat\" nicht definiert.")
                             exit(-1)
                         self.npcs.append(entity)
                 elif "Door" in line:
@@ -81,7 +79,6 @@ class Map:
                     self.init_entrance(line, pos_x, pos_y, "<")
         if not player_defined and gtg.player.pos_x == -1 and gtg.player.pos_y == -1:
             print(gtg.language.level_player_not_defined)
-            # print("Es darf kein Level gestartet werden, in dem keine Spielerkoordinaten definiert sind.")
             exit(-1)
         level_file.close()
 
@@ -134,8 +131,6 @@ class Map:
                         if npc.is_alive() and self.visible_to_player[npc.pos_y][npc.pos_x] and \
                                 brezel.check_distance(npc.pos_y - pos_y, npc.pos_x - pos_x, npc.range) and \
                                 npc.visible[pos_y][pos_x]:
-                            # brezel.draw_brezelheim(self, npc.pos_y, npc.pos_x, pos_y, pos_x, npc.range):
-                            # self.colours[pos_y][pos_x] = colours.get_colour("green")
                             self.colours[pos_y][pos_x] = colours.get_colour("yellow")
 
     def find_object_on_level(self, objects, pos_y, pos_x):  # should be replaced or deleted

@@ -57,8 +57,6 @@ class GateToGods:
                         except ValueError:
                             print(self.language.unitsdat_number_error.replace("(LINE)",
                                   str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
-                            # print("Zeile", line, "von \"units.dat\" ist fehlerhaft: ",
-                            #       lines[line].split(":")[1].replace("\n", ""), "ist keine Zahl.")
                             valid_units_file = False
                     elif "damage" in lines[line]:
                         try:
@@ -70,7 +68,6 @@ class GateToGods:
                                 maximum_damage = minimum_damage
                         except ValueError:
                             print(self.language.unitsdat_damage_error.replace("(LINE)", str(line)))
-                            # print("Zeile", line, "von \"units.dat\" ist fehlerhaft: Bitte überprüfe die Schadenszahl.")
                             valid_units_file = False
                     elif "fieldOfVision" in lines[line]:
                         try:
@@ -78,8 +75,6 @@ class GateToGods:
                         except ValueError:
                             print(self.language.unitsdat_number_error.replace("(LINE)",
                                   str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
-                            # print("Zeile", line, "von \"units.dat\" ist fehlerhaft: ",
-                            #       lines[line].split(":")[1].replace("\n", ""), "ist keine Zahl.")
                             valid_units_file = False
                     elif "hostile" in lines[line]:
                         if "false" in lines[line] or "False" in lines[line]:
@@ -93,7 +88,6 @@ class GateToGods:
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
                     print(self.language.unitsdat_incomplete_definition.replace("(ENTITY_ID)"), entity_id)
-                    # print("Die Definition des Entity \"" + entity_id + "\" ist unvollständig.")
                     exit(-1)
                 else:
                     self.default_entities.append(DefaultEntity(entity_id, name, range_of_vision, hp, minimum_damage,
@@ -102,14 +96,11 @@ class GateToGods:
                         break
             if not player_defined:
                 print(self.language.unitsdat_player_not_defined)
-                # print("Das Spiel kann nicht starten, weil der Spieler in \"units.dat\" nicht definiert ist.")
                 exit(-1)
             if not valid_units_file:
                 exit(-1)
         except FileNotFoundError:
             print(self.language.unitsdat_not_found)
-            # print("Die Datei \"units.dat\", welche Informationen zu allen Entities beinhaltet, konnte nicht gefunden "
-            #       "werden.")
             exit(-1)
 
     def set_entity(self, entity_id, pos_y, pos_x):

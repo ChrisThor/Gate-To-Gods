@@ -83,7 +83,6 @@ class Messagebox:
     def player_death(self, gtg):
         if gtg.colours.beautiful_colours:
             message = gtg.colours.get_colour("red") + gtg.language.player_death_message + gtg.colours.get_colour("white")
-            # message = gtg.colours.get_colour("red") + "Du wurdest überwältigt." + gtg.colours.get_colour("white")
             self.new_message = Message(message, len(gtg.colours.get_colour("red")) + len(gtg.colours.get_colour("white")))
         else:
             self.new_message = Message("Du wurdest überwältigt.")
