@@ -154,9 +154,6 @@ class GateToGods:
             if entrance is not None:
                 entrance.enter(self)
             skip_npc_turn = True
-        elif pressed_key == self.keys.toggle_beautiful_mode:
-            self.colours.toggle_beautiful_colours()
-            skip_npc_turn = True
         elif pressed_key == self.keys.show_coordinates:
             if not self.player.show_coordinates:
                 self.player.show_coordinates = True

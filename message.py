@@ -4,8 +4,5 @@ class Message:
         self.colour_code_length = colour_code_length
         self.length = len(content)
 
-    def fill(self, width, colour_mode):
-        if colour_mode:
-            self.content = self.content.ljust(width + self.colour_code_length, " ")
-        else:
-            self.content = self.content.ljust(width, " ")
+    def fill(self, width):
+        self.content = self.content.ljust(width + self.colour_code_length, " ")

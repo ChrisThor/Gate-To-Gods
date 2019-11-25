@@ -1,9 +1,8 @@
 class Colours:
     def __init__(self):
-        self.beautiful_colours = False
         self.clear_screen = "\033[2J"
         self.jump_to_top = "\033[H"
-        self.grey = "\033[30;1m"
+        self.grey = "\033[38;2;100;100;100m"
         self.red = "\033[31m"
         self.green = "\033[32m"
         self.yellow = "\033[33m"
@@ -12,16 +11,6 @@ class Colours:
         self.cyan = "\033[36m"
         self.white = "\033[37m"
         self.default = "\033[0m"
-
-    def toggle_beautiful_colours(self):
-        if not self.beautiful_colours:
-            print(self.reset())
-            self.grey = "\033[38;2;100;100;100m"
-            self.beautiful_colours = True
-        else:
-            print("\033[1m")
-            self.grey = "\033[30;1m"
-            self.beautiful_colours = False
 
     def get_colour(self, colour: str):
         if colour == "grey":

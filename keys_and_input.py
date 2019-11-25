@@ -19,7 +19,6 @@ class Input:
         self.previous_slide = "p"
         self.enter_exit = "<"
         self.enter_entrance = ">"
-        self.toggle_beautiful_mode = "b"
         self.show_coordinates = "#"
 
     def get_direction_value(self, pressed_key: str, pos_y: int, pos_x: int):

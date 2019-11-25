@@ -12,11 +12,11 @@ class Messagebox:
         messages = []
         for i in range(5):
             message = Message()
-            message.fill(self.width, False)
+            message.fill(self.width)
             messages.append(message)
         return messages
 
-    def update_messagebox(self, colour_mode):
+    def update_messagebox(self):
         if self.message_count != 5:
             self.message_count += 1
         else:
@@ -25,7 +25,7 @@ class Messagebox:
 
         skip = False
 
-        self.new_message.fill(self.width, colour_mode)
+        self.new_message.fill(self.width)
         for slot in range(5):
             trimmed_message = self.messages[slot].content.replace(" ", "")
             if trimmed_message == "":
@@ -46,56 +46,41 @@ class Messagebox:
         new_hp = npc.hp - damage
         if new_hp < 0:
             new_hp = 0
-
-        if gtg.colours.beautiful_colours:
-            message = gtg.language.attack_npc_message.replace("(NPC_NAME)", gtg.colours.get_colour("yellow") + npc.name + gtg.colours.get_colour("white"))\
-                .replace("(PLAYER_DAMAGE)", gtg.colours.get_colour("red") + str(damage) + gtg.colours.get_colour("white"))\
-                .replace("(NPC_HP)", gtg.colours.get_colour("red") + str(new_hp) + gtg.colours.get_colour("white"))
-            self.new_message = Message(message, 2 * len(gtg.colours.get_colour("yellow")) + 4 *
-                                       len(gtg.colours.get_colour("white")) + 2 * len(gtg.colours.get_colour("red")))
-        else:
-            self.new_message = Message("Du greifst " + npc.name + " mit " + str(damage) + " Schaden an. " + npc.name +
-                                       " hat " + str(new_hp) + " Lebenspunkte übrig.")
-        self.update_messagebox(gtg.colours.beautiful_colours)
+        message = gtg.language.attack_npc_message.replace("(NPC_NAME)", gtg.colours.get_colour("yellow") + npc.name + gtg.colours.get_colour("white"))\
+            .replace("(PLAYER_DAMAGE)", gtg.colours.get_colour("red") + str(damage) + gtg.colours.get_colour("white"))\
+            .replace("(NPC_HP)", gtg.colours.get_colour("red") + str(new_hp) + gtg.colours.get_colour("white"))
+        self.new_message = Message(message, 2 * len(gtg.colours.get_colour("yellow")) + 4 *
+                                   len(gtg.colours.get_colour("white")) + 2 * len(gtg.colours.get_colour("red")))
+        self.update_messagebox()
 
     def attack_player_m(self, gtg, npc, damage):
-        if gtg.colours.beautiful_colours:
-            message = gtg.language.attack_player_message.replace("(NPC_NAME)", gtg.colours.get_colour("yellow") +
-                npc.name + gtg.colours.get_colour("white")).replace("(NPC_DAMAGE)", gtg.colours.get_colour("red") +
-                str(damage) + gtg.colours.get_colour("white")).replace("(PLAYER_HP)", gtg.colours.get_colour("red") +
-                str(gtg.player.hp) + gtg.colours.get_colour("white"))
-            self.new_message = Message(message, len(gtg.colours.get_colour("yellow")) + 3 *
+        message = gtg.language.attack_player_message.replace("(NPC_NAME)", gtg.colours.get_colour("yellow") +
+            npc.name + gtg.colours.get_colour("white")).replace("(NPC_DAMAGE)", gtg.colours.get_colour("red") +
+            str(damage) + gtg.colours.get_colour("white")).replace("(PLAYER_HP)", gtg.colours.get_colour("red") +
+            str(gtg.player.hp) + gtg.colours.get_colour("white"))
+        self.new_message = Message(message, len(gtg.colours.get_colour("yellow")) + 3 *
                                        len(gtg.colours.get_colour("white")) + 2 * len(gtg.colours.get_colour("red")))
-        else:
-            self.new_message = Message(npc.name + " greift dich an. Du verlierst " + str(damage) + " von " +
-                                       str(gtg.player.hp) + " Lebenspunkten.")
-        self.update_messagebox(gtg.colours.beautiful_colours)
+        self.update_messagebox()
 
     def npc_death(self, gtg, npc):
-        if gtg.colours.beautiful_colours:
-            message = gtg.colours.get_colour("cyan") + gtg.language.npc_death_message.replace("(NPC_NAME)", npc.name) + gtg.colours.get_colour("white")
-            self.new_message = Message(message, len(gtg.colours.get_colour("cyan")) +
-                                       len(gtg.colours.get_colour("white")))
-        else:
-            self.new_message = Message(npc.name + " sackt bewusstlos zusammen.")
-        self.update_messagebox(gtg.colours.beautiful_colours)
+        message = gtg.colours.get_colour("cyan") + gtg.language.npc_death_message.replace("(NPC_NAME)", npc.name) + \
+                  gtg.colours.get_colour("white")
+        self.new_message = Message(message, len(gtg.colours.get_colour("cyan")) + len(gtg.colours.get_colour("white")))
+        self.update_messagebox()
 
     def player_death(self, gtg):
-        if gtg.colours.beautiful_colours:
-            message = gtg.colours.get_colour("red") + gtg.language.player_death_message + gtg.colours.get_colour("white")
-            self.new_message = Message(message, len(gtg.colours.get_colour("red")) + len(gtg.colours.get_colour("white")))
-        else:
-            self.new_message = Message("Du wurdest überwältigt.")
-        self.update_messagebox(gtg.colours.beautiful_colours)
+        message = gtg.colours.get_colour("red") + gtg.language.player_death_message + gtg.colours.get_colour("white")
+        self.new_message = Message(message, len(gtg.colours.get_colour("red")) + len(gtg.colours.get_colour("white")))
+        self.update_messagebox()
 
     def cannot_close_door(self, gtg):
         self.new_message = Message(gtg.language.cannot_close_door_message)
-        self.update_messagebox(False)
+        self.update_messagebox()
 
     def close_door(self, gtg):
         self.new_message = Message(gtg.language.close_door_message)
-        self.update_messagebox(False)
+        self.update_messagebox()
 
     def open_door(self, gtg):
         self.new_message = Message(gtg.language.open_door_message)
-        self.update_messagebox(False)
+        self.update_messagebox()
