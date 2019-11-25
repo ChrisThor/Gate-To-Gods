@@ -1,0 +1,16 @@
+no_level_parameter=Gäbet Se als erschden Parameter des Level o, des Se öffna wellet.
+unitsdat_number_error=Dui Zeile (LINE) von "units.dat" ischt fehlerhaft: (NOT_A_NUMBER) ischt koine Zohl.
+unitsdat_damage_error=Dui Zeile (LINE) von "units.dat" ischt fehlerhaft: überprüfet Se bidde die Schadenszohl.
+unitsdat_incomplete_definition=Dui Definition vom Wesa "(ENTITY_ID)" ischt ovollständg.
+unitsdat_player_not_defined=Des Spiel ko net starta, weil dr Spielr in "units.dat" net definiert ischt.
+unitsdat_not_found=Dui Datei "units.dat", dui Informationa zu allen Wesa beinhaldet, konnt' net gfunda werda.
+level_file_not_found=Dui Datei "(FILE)", dui des Levl endhält, des glada werda soll, konnt' net gfunda werda.
+level_entity_not_defined=Des Wesa "(ENTITY_ID)" ischt in dr Datei "units.dat" net definiert.
+level_player_not_defined=Se dürfet koi Levl starta, in dem koi Spielrkordinata definiert senn.
+attack_npc_message=Du greifscht (NPC_NAME) mit (PLAYER_DAMAGE) Schada o. (NPC_NAME) hat (NPC_HP) Läbnspunkta übrig.
+attack_player_message=(NPC_NAME) greift di o. Du verlierscht (NPC_DAMAGE) von (PLAYER_HP) Läbnspunkta.
+npc_death_message=(NPC_NAME) sackt bewusstlos zusammen.
+player_death_message=Karle, d'bischd gstorba.
+cannot_close_door_message=Dui Dür ko net gschlossa werda.
+close_door_message=Du schlieschdt oine Dür.
+open_door_message=Du machscht oine Dür uff.
