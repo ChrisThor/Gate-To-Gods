@@ -1,6 +1,6 @@
 no_level_parameter=The parameter which contains the level that will be loaded first is missing.
 unitsdat_number_error=Line (LINE) of "units.dat" is incorrect: (NOT_A_NUMBER) is not a number.
-unitsdat_damage_error=Line(LINE) of "units.dat" is incorrect: Please check the damage number.
+unitsdat_damage_error=Line (LINE) of "units.dat" is incorrect: Please check the damage number.
 unitsdat_incomplete_definition=The definition of entity "(ENTITY_ID)" in incomplete.
 unitsdat_player_not_defined=The game can't start because the player is not defined in "units.dat".
 unitsdat_not_found="units.dat", which contains all information of every entity could not be found.
