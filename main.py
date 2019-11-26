@@ -84,9 +84,12 @@ class GateToGods:
                         elif "true" in lines[line] or "True" in lines[line]:
                             aggression = True
                     elif "name" in lines[line]:
-                        name = lines[line].split(":")[1].replace("\n", "")
-                        while name[0] == " ":
-                            name = name[1:]     # if a blank is in front of a name, it gets removed
+                        if entity_id in self.language.texts:
+                            name = self.language.texts.get(entity_id)
+                        else:
+                            name = lines[line].split(":")[1].replace("\n", "")
+                            while name[0] == " ":
+                                name = name[1:]     # if a blank is in front of a name, it gets removed
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
                     print(self.language.texts.get("unitsdat_incomplete_definition", self.language.undefined)
