@@ -39,7 +39,7 @@ class Map:
         try:
             level_file = open(file, "r")
         except FileNotFoundError:
-            print(gtg.language.level_file_not_found.replace("(FILE)", file))
+            print(gtg.language.texts.get("level_file_not_found", gtg.language.undefined).replace("(FILE)", file))
             exit(-1)
 
         loopstate = 0
@@ -68,7 +68,8 @@ class Map:
                         entity_id = line.split(":")[2].replace("\n", "")
                         entity = gtg.set_entity(entity_id, pos_y, pos_x)
                         if entity is None:
-                            print(gtg.language.level_entity_not_defined.replace("(ENTITY_ID)", entity_id))
+                            print(gtg.language.texts.get("level_entity_not_defined", gtg.language.undefined)
+                                  .replace("(ENTITY_ID)", entity_id))
                             exit(-1)
                         self.npcs.append(entity)
                 elif "Door" in line:
@@ -78,7 +79,7 @@ class Map:
                 elif "Exit" in line:
                     self.init_entrance(line, pos_x, pos_y, "<")
         if not player_defined and gtg.player.pos_x == -1 and gtg.player.pos_y == -1:
-            print(gtg.language.level_player_not_defined)
+            print(gtg.language.gtg.language.textx.get("level_player_not_defined", gtg.language.undefined))
             exit(-1)
         level_file.close()
 

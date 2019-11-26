@@ -56,8 +56,8 @@ class GateToGods:
                         try:
                             hp = int(lines[line].split(":")[1])
                         except ValueError:
-                            print(self.language.unitsdat_number_error.replace("(LINE)",
-                                  str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
+                            print(self.language.texts.get("unitsdat_number_error", self.language.undefined)
+                                  .replace("(LINE)", str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
                             valid_units_file = False
                     elif "damage" in lines[line]:
                         try:
@@ -68,14 +68,15 @@ class GateToGods:
                                 minimum_damage = int(lines[line].split("(")[1].split(")")[0])
                                 maximum_damage = minimum_damage
                         except ValueError:
-                            print(self.language.unitsdat_damage_error.replace("(LINE)", str(line)))
+                            print(self.language.texts.get("unitsdat_damage_error", self.language.undefined)
+                                  .replace("(LINE)", str(line)))
                             valid_units_file = False
                     elif "fieldOfVision" in lines[line]:
                         try:
                             range_of_vision = int(lines[line].split(":")[1])
                         except ValueError:
-                            print(self.language.unitsdat_number_error.replace("(LINE)",
-                                  str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
+                            print(self.language.texts.get("unitsdat_number_error", self.language.undefined)
+                                  .replace("(LINE)", str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
                             valid_units_file = False
                     elif "hostile" in lines[line]:
                         if "false" in lines[line] or "False" in lines[line]:
@@ -88,7 +89,8 @@ class GateToGods:
                             name = name[1:]     # if a blank is in front of a name, it gets removed
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
-                    print(self.language.unitsdat_incomplete_definition.replace("(ENTITY_ID)"), entity_id)
+                    print(self.language.texts.get("unitsdat_incomplete_definition", self.language.undefined)
+                          .replace("(ENTITY_ID)"), entity_id)
                     exit(-1)
                 else:
                     self.default_entities.append(DefaultEntity(entity_id, name, range_of_vision, hp, minimum_damage,
@@ -96,12 +98,12 @@ class GateToGods:
                     if line >= len(lines):
                         break
             if not player_defined:
-                print(self.language.unitsdat_player_not_defined)
+                print(self.language.texts.get("unitsdat_player_not_defined", self.language.undefined))
                 exit(-1)
             if not valid_units_file:
                 exit(-1)
         except FileNotFoundError:
-            print(self.language.unitsdat_not_found)
+            print(self.language.texts.get("unitsdat_not_found", self.language.undefined))
             exit(-1)
 
     def set_entity(self, entity_id, pos_y, pos_x):
@@ -187,7 +189,7 @@ def get_level_file_name(language):
     if len(sys.argv) > 1:
         return sys.argv[1]
     else:
-        print(language.no_level_parameter)
+        print(language.texts.get("no_level_parameter", language.undefined))
         exit(0)
 
 
