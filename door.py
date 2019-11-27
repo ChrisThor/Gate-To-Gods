@@ -9,7 +9,7 @@ class Door:
             self.state = "open"
             gtg.msg_box.open_door(gtg)
             return 1
-        elif pressed_key == gtg.keys.close_door:
+        elif pressed_key == gtg.keys.close_door and self.state == "open":
             if self.pos_y != gtg.player.pos_y or self.pos_x != gtg.player.pos_x:
                 allowed_to_close = True
                 for npc in gtg.current_level.npcs:
