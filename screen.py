@@ -6,9 +6,16 @@ class Screen:
         self.len_y = len_y
         self.len_x = len_x
         self.separator = self.set_separator(len_x)
+        self.doors = []
+        self.npcs = []
+        self.entrances = []
         self.content = ""
 
     def build_screen(self, gtg):
+        self.doors = gtg.current_level.doors.copy()
+        self.npcs = gtg.current_level.npcs.copy()
+        self.entrances = gtg.current_level.entrances_and_exits.copy()
+
         self.content = gtg.colours.jump_up()
         self.content += gtg.player.print_hp(gtg.colours, self)
 
@@ -28,9 +35,9 @@ class Screen:
                             else:
                                 if self.find_npc(gtg, pos_x, pos_y):
                                     continue
-                                if self.find_door(gtg, pos_x, pos_y):
+                                if self.find_door(pos_x, pos_y):
                                     continue
-                                if self.find_entrance(gtg, pos_y, pos_x):
+                                if self.find_entrance(pos_y, pos_x):
                                     continue
                                 self.content += gtg.current_level.level_objects[pos_y][pos_x]
                         else:
@@ -41,28 +48,31 @@ class Screen:
         self.content += gtg.msg_box.get_msgbox(self, gtg.colours)
         return self.content
 
-    def find_entrance(self, gtg, pos_y, pos_x):
-        for entrance in gtg.current_level.entrances_and_exits:
+    def find_entrance(self, pos_y, pos_x):
+        for entrance in self.entrances:
             if entrance.pos_y == pos_y and entrance.pos_x == pos_x:
                 self.content += entrance.symbol
+                self.entrances.remove(entrance)
                 return True
         return False
 
-    def find_door(self, gtg, pos_x, pos_y):
-        for door in gtg.current_level.doors:
+    def find_door(self, pos_x, pos_y):
+        for door in self.doors:
             if pos_y == door.pos_y and pos_x == door.pos_x:
                 if door.state == "closed":
                     self.content += "+"
                 else:
                     self.content += "'"
+                self.doors.remove(door)
                 return True
         return False
 
     def find_npc(self, gtg, pos_x, pos_y):
-        for npc in gtg.current_level.npcs:
+        for npc in self.npcs:
             if pos_y == npc.pos_y and pos_x == npc.pos_x:
                 if npc.alive and gtg.current_level.visible_to_player[pos_y][pos_x]:
                     self.content += npc.symbol
+                    self.npcs.remove(npc)
                     return True
         return False
 
