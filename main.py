@@ -129,6 +129,7 @@ class GateToGods:
             record = True
 
         self.prepare_new_map()
+        print(self.colours.clear())
 
         while playing:
             self.scr.print(record, self)
