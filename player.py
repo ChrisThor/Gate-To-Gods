@@ -2,19 +2,18 @@ from entity import Entity
 
 
 class Player(Entity):
-    def print_hp(self, reciever, colours, scr):
-        colour = ""
+    def print_hp(self, colours, scr):
         if self.hp < 20:
             colour = colours.get_colour("red")
         else:
             colour = colours.get_colour("white")
 
-        reciever.write(colour + "HP: " + str(self.hp).rjust(len(str(self.max_hp))) + "/" +
-                       str(self.max_hp))
+        receiver = colour + "HP: " + str(self.hp).rjust(len(str(self.max_hp))) + "/" + str(self.max_hp)
         if self.show_coordinates:
-            reciever.write("\tX: " + str(self.pos_x) + " Y: " + str(self.pos_y).ljust(4, " "))
-        reciever.write("\n" + colours.get_colour("white"))
-        scr.print_separator(reciever)
+            receiver += "\tX: " + str(self.pos_x) + " Y: " + str(self.pos_y).ljust(4, " ")
+        receiver += "\n" + colours.get_colour("white")
+        receiver += scr.get_separator()
+        return receiver
 
     def move(self, key, keys, level):
         pos_y, pos_x = keys.get_direction_value(key, self.pos_y, self.pos_x)

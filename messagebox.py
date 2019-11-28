@@ -36,11 +36,12 @@ class Messagebox:
         if not skip:
             self.messages[4] = self.new_message
 
-    def print_msgbox(self, reciever, colours, scr):
-        reciever.write(colours.get_colour("white"))
-        scr.print_separator(reciever)
+    def get_msgbox(self, scr, colours):
+        receiver = colours.get_colour("white")
+        receiver += scr.get_separator()
         for message in self.messages:
-            reciever.write(message.content + "\n")
+            receiver += message.content + "\n"
+        return receiver
 
     def attack_npc(self, gtg, damage, npc):
         new_hp = npc.hp - damage
