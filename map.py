@@ -157,16 +157,11 @@ class Map:
             return False
 
     def is_visible(self, pos_y, pos_x):
-        if pos_y < 0 or pos_x < 0 or pos_y >= self.len_y or pos_x >= self.len_x:
-            return False
-        elif self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
-            door = self.find_object_on_level(self.doors, pos_y, pos_x)
-            walkable = False
-            if door != -1 and self.doors[door].state == "open":
-                walkable = True
-            elif door == -1:
-                walkable = True
-            if walkable:
+        if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
+            if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
+                for door in self.doors:
+                    if door.pos_y == pos_y and door.pos_x == pos_x and door.state == "closed":
+                        return False
                 return True
         return False
 
