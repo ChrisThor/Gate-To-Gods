@@ -143,7 +143,7 @@ class Map:
         return -1
 
     def is_walkable(self, pos_y, pos_x):
-        try:
+        if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
             if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
                 for door in self.doors:
                     if door.pos_y == pos_y and door.pos_x == pos_x and door.state == "closed":
@@ -153,7 +153,7 @@ class Map:
                         return False
                 return True
             return False
-        except IndexError:
+        else:
             return False
 
     def is_visible(self, pos_y, pos_x):
