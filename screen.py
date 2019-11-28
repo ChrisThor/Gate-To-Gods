@@ -33,7 +33,9 @@ class Screen:
                             if gtg.player.pos_y == pos_y and gtg.player.pos_x == pos_x:
                                 self.content += gtg.player.symbol
                             else:
-                                if self.find_npc(gtg, pos_x, pos_y):
+                                if self.find_npc(gtg, pos_x, pos_y, True):
+                                    continue
+                                if self.find_npc(gtg, pos_x, pos_y, False):
                                     continue
                                 if self.find_door(pos_x, pos_y):
                                     continue
@@ -67,13 +69,18 @@ class Screen:
                 return True
         return False
 
-    def find_npc(self, gtg, pos_x, pos_y):
+    def find_npc(self, gtg, pos_x, pos_y, npc_alive):
         for npc in self.npcs:
             if pos_y == npc.pos_y and pos_x == npc.pos_x:
-                if npc.alive and gtg.current_level.visible_to_player[pos_y][pos_x]:
+                if npc_alive and npc.alive:
                     self.content += npc.symbol
                     self.npcs.remove(npc)
-                    return True
+                elif not npc_alive and not npc.alive:
+                    self.content += "%"
+                    self.npcs.remove(npc)
+                else:
+                    continue
+                return True
         return False
 
     def get_separator(self) -> str:
