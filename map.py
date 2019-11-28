@@ -134,14 +134,6 @@ class Map:
                                 npc.visible[pos_y][pos_x]:
                             self.colours[pos_y][pos_x] = colours.get_colour("yellow")
 
-    def find_object_on_level(self, objects, pos_y, pos_x):  # should be replaced or deleted
-        counter = 0
-        for o in objects:
-            if o.confirm_pos(pos_y, pos_x):
-                return counter
-            counter += 1
-        return -1
-
     def is_walkable(self, pos_y, pos_x):
         if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
             if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
