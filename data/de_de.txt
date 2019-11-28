@@ -14,3 +14,5 @@ player_death_message=Du wurdest überwältigt.
 cannot_close_door_message=Die Türe kann nicht geschlossen werden.
 close_door_message=Du schließt eine Tür.
 open_door_message=Du öffnest eine Tür.
+knocked_out_npc=Leiche eines (NPC_NAME)
+knocked_out_npcs=Mehrere Leichen

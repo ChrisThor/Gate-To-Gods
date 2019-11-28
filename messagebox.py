@@ -36,9 +36,8 @@ class Messagebox:
         if not skip:
             self.messages[4] = self.new_message
 
-    def get_msgbox(self, scr, colours):
-        receiver = colours.get_colour("white")
-        receiver += scr.get_separator()
+    def get_msgbox(self):
+        receiver = ""
         for message in self.messages:
             receiver += message.content + "\n"
         return receiver

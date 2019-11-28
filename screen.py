@@ -33,9 +33,9 @@ class Screen:
                             if gtg.player.pos_y == pos_y and gtg.player.pos_x == pos_x:
                                 self.content += gtg.player.symbol
                             else:
-                                if self.find_npc(gtg, pos_x, pos_y, True):
+                                if self.find_npc(pos_x, pos_y, True):
                                     continue
-                                if self.find_npc(gtg, pos_x, pos_y, False):
+                                if self.find_npc(pos_x, pos_y, False):
                                     continue
                                 if self.find_door(pos_x, pos_y):
                                     continue
@@ -47,7 +47,10 @@ class Screen:
                     except IndexError:
                         self.content += "!"
             self.content += "\n"
-        self.content += gtg.msg_box.get_msgbox(self, gtg.colours)
+        self.content += gtg.colours.get_colour("white")
+        self.content += self.get_separator()
+        self.content += self.get_ground_information(gtg)
+        self.content += gtg.msg_box.get_msgbox()
         return self.content
 
     def find_entrance(self, pos_y, pos_x):
@@ -69,7 +72,7 @@ class Screen:
                 return True
         return False
 
-    def find_npc(self, gtg, pos_x, pos_y, npc_alive):
+    def find_npc(self, pos_x, pos_y, npc_alive):
         for npc in self.npcs:
             if pos_y == npc.pos_y and pos_x == npc.pos_x:
                 if npc_alive and npc.alive:
@@ -82,6 +85,19 @@ class Screen:
                     continue
                 return True
         return False
+
+    def get_ground_information(self, gtg):
+        dead_npcs = []
+        for npc in gtg.current_level.npcs:
+            if npc.confirm_pos(gtg.player.pos_y, gtg.player.pos_x) and not npc.alive:
+                dead_npcs.append(npc)
+        if len(dead_npcs) == 0:
+            return "".ljust(self.len_x) + "\n"
+        if len(dead_npcs) == 1:
+            return gtg.language.texts.get("knocked_out_npc", gtg.language.undefined)\
+                .replace("(NPC_NAME)", dead_npcs[0].name).ljust(self.len_x) + "\n"
+        else:
+            return gtg.language.texts.get("knocked_out_npcs", gtg.language.undefined).ljust(self.len_x) + "\n"
 
     def get_separator(self) -> str:
         return self.separator
