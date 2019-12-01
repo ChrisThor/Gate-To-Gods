@@ -1,1 +1,3 @@
 language_file=en_en.txt
+screen_height=21
+screen_width=81
