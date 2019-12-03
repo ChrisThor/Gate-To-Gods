@@ -9,6 +9,7 @@ from messagebox import Messagebox
 from screen import Screen
 from randomness import Randomness
 from language import LanguageManagement
+from options_menu import OptionsMenu
 import time
 
 
@@ -16,8 +17,9 @@ class GateToGods:
     def __init__(self, seed: int, log_filename: str):
         self.maps = []
         self.default_entities = []
-        configurations = read_configuration_file()
-        self.language = LanguageManagement(configurations.get("language_file"))
+        self.configurations = read_configuration_file()
+        self.language = LanguageManagement(self.configurations.get("language_file"))
+        self.options = OptionsMenu(self.language)
         mapname = get_level_file_name(self.language)
         self.read_units_dat()
         self.colours = Colours()
@@ -26,7 +28,7 @@ class GateToGods:
         self.current_level = self.maps[0]
         self.rng = Randomness(seed)
         self.brezelheim = Brezelheim(self.current_level)
-        self.scr = Screen(configurations.get("screen_height"), configurations.get("screen_width"))
+        self.scr = Screen(self.configurations.get("screen_height"), self.configurations.get("screen_width"))
         self.msg_box = Messagebox(self.scr.len_x)
         self.keys = Input()  # inits the input keys
         self.log_filename = log_filename
@@ -112,7 +114,7 @@ class GateToGods:
 
     def set_entity(self, entity_id, pos_y, pos_x):
         for entity in self.default_entities:
-            if entity.id == entity_id:
+            if entity.entity_id == entity_id:
                 return entity.create(pos_y, pos_x)
         return None
 
@@ -167,6 +169,9 @@ class GateToGods:
                 self.player.show_coordinates = True
             else:
                 self.player.show_coordinates = False
+        elif pressed_key == "options":
+            self.options.enter_menu(self)
+            skip_npc_turn = True
         return playing, skip_npc_turn
 
 

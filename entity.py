@@ -1,5 +1,6 @@
 class Entity:
-    def __init__(self, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage):
+    def __init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage):
+        self.entity_id = entity_id
         self.pos_y = pos_y
         self.pos_x = pos_x
         self.symbol = symbol

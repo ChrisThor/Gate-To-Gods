@@ -1,9 +1,12 @@
 import word_wrap
+import word
 from screen import Screen
 
 
 class Box:
-    def __init__(self, content: list, box_width: int):
+    def __init__(self, content, box_width: int):
+        if isinstance(content, str):
+            content = word.convert_text_to_list(content)
         self.width: int = box_width
         self.lines: list = word_wrap.wrap(content, box_width)
         self.height: int = len(self.lines)

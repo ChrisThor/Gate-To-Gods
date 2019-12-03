@@ -4,7 +4,7 @@ from player import Player
 
 class DefaultEntity:
     def __init__(self, entity_id: str, name: str, range_of_vision: int, hp: int, minimum_damage: int, maximum_damage: int, aggressive: bool):
-        self.id = entity_id
+        self.entity_id = entity_id
         self.name = name
         self.range_of_vision = range_of_vision
         self.hp = hp
@@ -13,12 +13,12 @@ class DefaultEntity:
         self.aggressive = aggressive
 
     def create(self, pos_y, pos_x):
-        if self.id == "Player":
-            return Player(pos_y, pos_x, "@", self.range_of_vision, self.hp, self.minimum_damage, self.maximum_damage)
+        if self.entity_id == "Player":
+            return Player(self.entity_id, pos_y, pos_x, "@", self.range_of_vision, self.hp, self.minimum_damage, self.maximum_damage)
         symbol = ""
         if self.aggressive:
             symbol = "E"
         else:
             symbol = "p"
-        return NonPlayerCharacter(pos_y, pos_x, symbol, self.aggressive, self.name, self.range_of_vision, self.hp, self.minimum_damage,
+        return NonPlayerCharacter(self.entity_id, pos_y, pos_x, symbol, self.aggressive, self.name, self.range_of_vision, self.hp, self.minimum_damage,
                                   self.maximum_damage)
