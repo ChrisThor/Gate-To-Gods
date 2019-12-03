@@ -9,6 +9,7 @@ from messagebox import Messagebox
 from screen import Screen
 from randomness import Randomness
 from language import LanguageManagement
+from options_menu import OptionsMenu
 import keyboard_input
 import time
 
@@ -17,7 +18,9 @@ class GateToGods:
     def __init__(self, seed: int, log_filename: str):
         self.maps = []
         self.default_entities = []
-        self.language = LanguageManagement()
+        self.configurations = read_configuration_file()
+        self.language = LanguageManagement(self.configurations.get("language_file"))
+        self.options = OptionsMenu(self.language)
         mapname = get_level_file_name(self.language)
         self.read_units_dat()
         self.colours = Colours()
@@ -26,7 +29,7 @@ class GateToGods:
         self.current_level = self.maps[0]
         self.rng = Randomness(seed)
         self.brezelheim = Brezelheim(self.current_level)
-        self.scr = Screen(21, 81)  # inits the size of the screen used to display the game
+        self.scr = Screen(self.configurations.get("screen_height"), self.configurations.get("screen_width"))
         self.msg_box = Messagebox(self.scr.len_x)
         self.keys = Input()  # inits the input keys
         self.log_filename = log_filename
@@ -112,7 +115,7 @@ class GateToGods:
 
     def set_entity(self, entity_id, pos_y, pos_x):
         for entity in self.default_entities:
-            if entity.id == entity_id:
+            if entity.entity_id == entity_id:
                 return entity.create(pos_y, pos_x)
         return None
 
@@ -167,6 +170,9 @@ class GateToGods:
                 self.player.show_coordinates = True
             else:
                 self.player.show_coordinates = False
+        elif pressed_key == "options":
+            self.options.enter_menu(self)
+            skip_npc_turn = True
         return playing, skip_npc_turn
 
 
@@ -196,6 +202,42 @@ def get_level_file_name(language):
     else:
         print(language.texts.get("no_level_parameter", language.undefined))
         exit(0)
+
+
+def read_configuration_file():
+    config = None
+    error_text = "Error in \"config.txt\": Please check the line containing "
+    configurations = {}
+    try:
+        config = open("data/config.txt", "r")
+    except FileNotFoundError:
+        print("\"config.txt\" could not be found.")
+        exit(-1)
+    lines = config.readlines()
+    config.close()
+    for line in lines:
+        if "language_file" in line:
+            try:
+                configurations["language_file"] = line.split("=")[1].replace("\n", "")
+            except IndexError:
+                print(error_text + "\"language_file\"")
+                exit(-1)
+        elif "screen_height" in line:
+            try:
+                configurations["screen_height"] = int(line.split("=")[1])
+            except ValueError or IndexError:
+                print(error_text + "\"screen_height\"")
+                exit(-1)
+        elif "screen_width" in line:
+            try:
+                configurations["screen_width"] = int(line.split("=")[1])
+            except ValueError or IndexError:
+                print(error_text + "\"screen_width\"")
+                exit(-1)
+    if len(configurations) < 3:
+        print("config.txt is incomplete.")
+        exit(-1)
+    return configurations
 
 
 if __name__ == '__main__':

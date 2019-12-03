@@ -11,6 +11,11 @@ class Screen:
         self.entrances = []
         self.content = ""
 
+    def change_size(self, new_len_y: int, new_len_x: int):
+        self.len_y = new_len_y
+        self.len_x = new_len_x
+        self.separator = self.set_separator(new_len_x)
+
     def build_screen(self, gtg):
         self.doors = gtg.current_level.doors.copy()
         self.npcs = gtg.current_level.npcs.copy()
