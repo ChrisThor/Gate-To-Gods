@@ -33,3 +33,4 @@ class Box:
         self.print_horizontal_line(start_pos_y, start_pos_x, "╔", "╗")
         self.print_content(start_pos_y + 1, start_pos_x, scr)
         self.print_horizontal_line(start_pos_y + self.height + 1, start_pos_x, "╚", "╝")
+        print()  # it only works with this statement, don't ask

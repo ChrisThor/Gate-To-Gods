@@ -1,5 +1,6 @@
 from language import LanguageManagement
 from box import Box
+import keyboard_input
 
 
 class OptionsMenu:
@@ -10,18 +11,16 @@ class OptionsMenu:
 
     def enter_menu(self, gtg):
         jump_position = "\033[" + str(gtg.scr.len_y + 8) + ";0H"
-        selected_option = ""
-        while selected_option != "3":
+        while gtg.user_input != "3":
             gtg.scr.print(False, gtg)
             self.display_box.print_box(gtg.scr)
-            selected_option = input(jump_position + "> ")[0]
-            if selected_option == "1":
+            gtg.user_input = keyboard_input.read_keyboard()
+            if gtg.user_input == "1":
                 Box(gtg.language.texts.get("option_new_file"),
                     len(gtg.language.texts.get("option_new_file"))).print_box(gtg.scr)
                 new_file = input(jump_position + "> ")
                 gtg.configurations["language_file"] = new_file
-
-            elif selected_option == "2":
+            elif gtg.user_input == "2":
                 Box(gtg.language.texts.get("option_new_screen"),
                     len(gtg.language.texts.get("option_new_screen"))).print_box(gtg.scr)
                 new_dimensions = input(jump_position + "> ")
@@ -29,9 +28,7 @@ class OptionsMenu:
                 gtg.scr.change_size(int(buffer[0]), int(buffer[1]))
                 gtg.configurations["screen_height"] = buffer[0]
                 gtg.configurations["screen_width"] = buffer[1]
-                print(gtg.colours.clear())
         configurations = open("data/config.txt", "w")
         for key in gtg.configurations:
-            print(gtg.configurations[key])
             configurations.write(str(key) + "=" + str(gtg.configurations[key]) + "\n")
         configurations.close()

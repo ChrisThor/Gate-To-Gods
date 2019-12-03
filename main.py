@@ -18,6 +18,7 @@ class GateToGods:
     def __init__(self, seed: int, log_filename: str):
         self.maps = []
         self.default_entities = []
+        self.user_input = ""
         self.configurations = read_configuration_file()
         self.language = LanguageManagement(self.configurations.get("language_file"))
         self.options = OptionsMenu(self.language)
@@ -137,9 +138,9 @@ class GateToGods:
 
         while playing:
             self.scr.print(record, self)
-            pressed_key = keyboard_input.read_keyboard()
+            self.user_input = keyboard_input.read_keyboard()
 
-            playing, skip_npc_turn = self.player_turn(pressed_key, playing, skip_npc_turn)
+            playing, skip_npc_turn = self.player_turn(playing, skip_npc_turn)
             if playing:
                 if not skip_npc_turn:
                     self.current_level.npc_actions(self)
@@ -152,25 +153,25 @@ class GateToGods:
                 else:
                     pass
 
-    def player_turn(self, pressed_key: str, playing: bool, skip_npc_turn: bool):
-        if pressed_key == self.keys.exit_game:
+    def player_turn(self, playing: bool, skip_npc_turn: bool):
+        if self.user_input == self.keys.exit_game:
             playing = False
-        elif pressed_key == self.keys.open_door or pressed_key == self.keys.close_door:
-            self.current_level.door_actions(self, pressed_key)
-        elif self.player.move(pressed_key, self.keys, self.current_level) == -1:
-            if not self.current_level.auto_toggle(self, pressed_key):
-                self.player.attack(self, pressed_key)
-        elif pressed_key == self.keys.enter_entrance or pressed_key == self.keys.enter_exit:
+        elif self.user_input == self.keys.open_door or self.user_input == self.keys.close_door:
+            self.current_level.door_actions(self, self.user_input)
+        elif self.player.move(self.user_input, self.keys, self.current_level) == -1:
+            if not self.current_level.auto_toggle(self, self.user_input):
+                self.player.attack(self, self.user_input)
+        elif self.user_input == self.keys.enter_entrance or self.user_input == self.keys.enter_exit:
             entrance = self.current_level.find_entrance(self)
             if entrance is not None:
                 entrance.enter(self)
             skip_npc_turn = True
-        elif pressed_key == self.keys.show_coordinates:
+        elif self.user_input == self.keys.show_coordinates:
             if not self.player.show_coordinates:
                 self.player.show_coordinates = True
             else:
                 self.player.show_coordinates = False
-        elif pressed_key == "options":
+        elif self.user_input == self.keys.options:
             self.options.enter_menu(self)
             skip_npc_turn = True
         return playing, skip_npc_turn
