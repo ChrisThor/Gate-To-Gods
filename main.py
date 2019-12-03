@@ -9,6 +9,7 @@ from messagebox import Messagebox
 from screen import Screen
 from randomness import Randomness
 from language import LanguageManagement
+import keyboard_input
 import time
 
 
@@ -133,7 +134,7 @@ class GateToGods:
 
         while playing:
             self.scr.print(record, self)
-            pressed_key = input()
+            pressed_key = keyboard_input.read_keyboard()
 
             playing, skip_npc_turn = self.player_turn(pressed_key, playing, skip_npc_turn)
             if playing:
