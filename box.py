@@ -4,9 +4,10 @@ from screen import Screen
 
 
 class Box:
-    def __init__(self, content, box_width: int):
+    def __init__(self, content, box_width: int, default_colour="\033[0m"):
         if isinstance(content, str):
             content = word.convert_text_to_list(content)
+        self.default_colour = default_colour
         self.width: int = box_width
         self.lines: list = word_wrap.wrap(content, box_width)
         self.height: int = len(self.lines)
@@ -30,7 +31,8 @@ class Box:
     def print_box(self, scr: Screen):
         start_pos_x: int = int(scr.len_x / 2) - int(self.width / 2) - 1
         start_pos_y: int = int(scr.len_y / 2) - int(self.height / 2) + self.y_offset
+        print(self.default_colour)
         self.print_horizontal_line(start_pos_y, start_pos_x, "╔", "╗")
         self.print_content(start_pos_y + 1, start_pos_x, scr)
         self.print_horizontal_line(start_pos_y + self.height + 1, start_pos_x, "╚", "╝")
-        print()  # it only works with this statement, don't ask
+        print("\033[0m")  # it only works with this statement, don't ask
