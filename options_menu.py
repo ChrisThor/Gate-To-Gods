@@ -17,12 +17,16 @@ class OptionsMenu:
             gtg.user_input = keyboard_input.read_keyboard()
             if gtg.user_input == "1":
                 Box(gtg.language.texts.get("option_new_file"),
-                    len(gtg.language.texts.get("option_new_file"))).print_box(gtg.scr)
+                    len(gtg.language.texts.get("option_new_file")),
+                    gtg.colours.get_random_colour(gtg.rng, True))\
+                    .print_box(gtg.scr)
                 new_file = input(jump_position + "> ")
                 gtg.configurations["language_file"] = new_file
             elif gtg.user_input == "2":
                 Box(gtg.language.texts.get("option_new_screen"),
-                    len(gtg.language.texts.get("option_new_screen"))).print_box(gtg.scr)
+                    len(gtg.language.texts.get("option_new_screen")),
+                    gtg.colours.get_random_colour(gtg.rng, True))\
+                    .print_box(gtg.scr)
                 new_dimensions = input(jump_position + "> ")
                 buffer = new_dimensions.split(":")
                 gtg.scr.change_size(int(buffer[0]), int(buffer[1]))
