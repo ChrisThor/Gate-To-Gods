@@ -3,7 +3,7 @@ class Colours:
         self.colours = dict()
         self.colours["clear_screen"] = "\033[2J"
         self.colours["jump_to_top"] = "\033[H"
-        self.colours["grey"] = "\033[38;2;100;100;100m"
+        self.colours["grey"] = "\033[38;5;238m"
         self.colours["red"] = "\033[31m"
         self.colours["green"] = "\033[32m"
         self.colours["yellow"] = "\033[33m"
@@ -26,3 +26,13 @@ class Colours:
 
     def jump_up(self):
         return self.get_colour("jump_to_top")
+
+    def get_random_colour(self, rng, foreground: bool):
+        if foreground:
+            mode = 38
+        else:
+            mode = 48
+        red = rng.next_random_number(0, 255)
+        green = rng.next_random_number(0, 255)
+        blue = rng.next_random_number(0, 255)
+        return f"\033[{mode};2;{red};{green};{blue}m"
