@@ -32,7 +32,7 @@ class Colours:
             mode = 38
         else:
             mode = 48
-        red = rng.next_random_number(0, 255)
-        green = rng.next_random_number(0, 255)
-        blue = rng.next_random_number(0, 255)
+        red = rng.randint(0, 255)
+        green = rng.randint(0, 255)
+        blue = rng.randint(0, 255)
         return f"\033[{mode};2;{red};{green};{blue}m"

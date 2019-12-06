@@ -55,7 +55,7 @@ class NonPlayerCharacter(Entity):
 
     def attack_player(self, gtg):
         if self.aggressive:
-            damage = gtg.rng.next_random_number(self.minimum_damage, self.maximum_damage)
+            damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
             if damage > gtg.player.hp:
                 damage = gtg.player.hp
             gtg.msg_box.attack_player_m(gtg, self, damage)

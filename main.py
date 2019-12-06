@@ -10,6 +10,7 @@ from screen import Screen
 from randomness import Randomness
 from language import LanguageManagement
 from options_menu import OptionsMenu
+from random import Random
 import keyboard_input
 import time
 
@@ -28,7 +29,7 @@ class GateToGods:
         self.player = self.set_entity("Player", -1, -1)
         self.maps.append(Map(mapname, self))
         self.current_level = self.maps[0]
-        self.rng = Randomness(seed)
+        self.rng = Random(seed)
         self.brezelheim = Brezelheim(self.current_level)
         self.scr = Screen(self.configurations.get("screen_height"), self.configurations.get("screen_width"))
         self.msg_box = Messagebox(self.scr.len_x)

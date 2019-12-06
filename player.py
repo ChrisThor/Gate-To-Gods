@@ -35,6 +35,6 @@ class Player(Entity):
         pos_y, pos_x = gtg.keys.get_direction_value(pressed_key, self.pos_y, self.pos_x)
         for npc in gtg.current_level.npcs:
             if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
-                damage = gtg.rng.next_random_number(self.minimum_damage, self.maximum_damage)
+                damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
                 gtg.msg_box.attack_npc(gtg, damage, npc)
                 npc.change_hp(gtg, damage)
