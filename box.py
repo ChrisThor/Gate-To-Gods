@@ -21,6 +21,7 @@ class Box:
         self.height: int = self.height_content + self.height_options
         self.y_offset = 2
         self.horizontal_line: str = ""
+        self.active_option = 0
         self.set_horizontal_line()
 
     def set_options(self, options: list):
@@ -58,20 +59,19 @@ class Box:
         print("\033[0m")  # it only works with this statement, don't ask
 
     def access_options(self, gtg) -> str:
-        active_option = 0
         pressed_key = ""
         while pressed_key != "KEY_ENTER":
             self.deactivate_options()
-            self.options[active_option].toggle()
+            self.options[self.active_option].toggle()
             self.print_box(gtg.scr)
             pressed_key = keyboard_input.read_keyboard()
             if pressed_key == "KEY_ARROW_UP":
-                if active_option != 0:
-                    active_option -= 1
+                if self.active_option != 0:
+                    self.active_option -= 1
             elif pressed_key == "KEY_ARROW_DOWN":
-                if active_option < len(self.options) - 1:
-                    active_option += 1
-        return self.options[active_option].text
+                if self.active_option < len(self.options) - 1:
+                    self.active_option += 1
+        return self.options[self.active_option].text
 
     def deactivate_options(self):
         for option in self.options:

@@ -22,7 +22,7 @@ class GateToGods:
         self.user_input = ""
         self.configurations = read_configuration_file()
         self.language = LanguageManagement(self.configurations.get("language_file"))
-        self.options = OptionsMenu(self.language)
+        self.options = OptionsMenu(self)
         mapname = get_level_file_name(self.language)
         self.read_units_dat()
         self.colours = Colours()
