@@ -22,3 +22,5 @@ option_new_file=Bitte wählen Sie die neue Sprachdatei aus
 option_change_screen=Bildschirmgröße ändern
 option_new_screen=Bitte geben Sie die neuen Bildschirmdimensionen ein
 option_go_back=Zurück
+screen_height=Höhe
+screen_width=Breite
