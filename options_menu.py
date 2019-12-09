@@ -1,31 +1,33 @@
 from language import LanguageManagement
 from box import Box
-import keyboard_input
+import os
 
 
 class OptionsMenu:
     def __init__(self, language: LanguageManagement):
-        text = language.texts.get("option_headline") + "\n " + language.texts.get("option_change_language") + "\n " + \
-            language.texts.get("option_change_screen") + "\n " + language.texts.get("option_go_back")
-        self.display_box = Box(text, 25)
+        headline = language.texts.get("option_headline")
+        options = [language.texts.get("option_change_language"), language.texts.get("option_change_screen"),
+                   language.texts.get("option_go_back")]
+        self.display_box = Box(content=headline, box_width=25, options=options)
 
     def enter_menu(self, gtg):
         jump_position = "\033[" + str(gtg.scr.len_y + 8) + ";0H"
-        while gtg.user_input != "3":
+        selected_option = ""
+        while selected_option != gtg.language.texts.get("option_go_back"):
             gtg.scr.print(False, gtg)
-            self.display_box.print_box(gtg.scr)
-            gtg.user_input = keyboard_input.read_keyboard()
-            if gtg.user_input == "1":
-                Box(gtg.language.texts.get("option_new_file"),
-                    len(gtg.language.texts.get("option_new_file")),
-                    gtg.colours.get_random_colour(gtg.rng, True))\
-                    .print_box(gtg.scr)
-                new_file = input(jump_position + "> ")
+            selected_option = self.display_box.access_options(gtg)
+            if selected_option == gtg.language.texts.get("option_change_language"):
+                options = os.listdir(os.getcwd() + "\\data")
+                new_file = Box(content=gtg.language.texts.get("option_new_file"),
+                               box_width=len(gtg.language.texts.get("option_new_file")),
+                               options=options,
+                               colour=gtg.colours.get_random_colour(gtg.rng, True))\
+                    .access_options(gtg)
                 gtg.configurations["language_file"] = new_file
-            elif gtg.user_input == "2":
-                Box(gtg.language.texts.get("option_new_screen"),
-                    len(gtg.language.texts.get("option_new_screen")),
-                    gtg.colours.get_random_colour(gtg.rng, True))\
+            elif selected_option == gtg.language.texts.get("option_change_screen"):
+                Box(content=gtg.language.texts.get("option_new_screen"),
+                    box_width=len(gtg.language.texts.get("option_new_screen")),
+                    colour=gtg.colours.get_random_colour(gtg.rng, True))\
                     .print_box(gtg.scr)
                 new_dimensions = input(jump_position + "> ")
                 buffer = new_dimensions.split(":")
