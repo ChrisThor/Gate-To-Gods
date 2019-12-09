@@ -17,7 +17,7 @@ class OptionsMenu:
             gtg.scr.print(False, gtg)
             selected_option = self.display_box.access_options(gtg)
             if selected_option == gtg.language.texts.get("option_change_language"):
-                options = os.listdir(os.getcwd() + "\\data")
+                options = os.listdir(os.getcwd() + "/data/lang")
                 new_file = Box(content=gtg.language.texts.get("option_new_file"),
                                box_width=len(gtg.language.texts.get("option_new_file")),
                                options=options,
