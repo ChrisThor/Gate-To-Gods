@@ -1,3 +1,3 @@
-language_file=en_en.txt
+language_file=de_de.txt
 screen_height=21
 screen_width=81
