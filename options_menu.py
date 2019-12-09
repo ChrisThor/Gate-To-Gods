@@ -10,8 +10,8 @@ class OptionsMenu:
                    gtg.language.texts.get("option_go_back")]
         self.display_box = Box(content=headline, box_width=25, options=options)
         self.change_language_box = Box(content=gtg.language.texts.get("option_new_file"),
-                               box_width=len(gtg.language.texts.get("option_new_file")),
-                               options=os.listdir(os.getcwd() + "/data/lang"))
+                                       box_width=len(gtg.language.texts.get("option_new_file")),
+                                       options=os.listdir(os.getcwd() + "/data/lang"))
         self.change_screen_box = Box(content=gtg.language.texts.get("option_new_screen"),
                                      box_width=27)
 
@@ -25,6 +25,8 @@ class OptionsMenu:
                 self.change_language(gtg)
             elif selected_option == gtg.language.texts.get("option_change_screen"):
                 self.change_screen_dimensions(gtg)
+            elif selected_option == "":
+                return None
         configurations = open("data/config.txt", "w")
         for key in gtg.configurations:
             configurations.write(str(key) + "=" + str(gtg.configurations[key]) + "\n")
@@ -41,7 +43,7 @@ class OptionsMenu:
         self.change_screen_box.colour = gtg.colours.get_random_colour(gtg.rng, True)
         while key != "KEY_ENTER" and key != "KEY_ESCAPE":
             print(f"\033[H{gtg.colours.clear()}{gtg.language.texts.get('screen_height')}: {len_y} "
-                  f"{gtg.language.texts.get('screen_width')}: {len_x}")
+                  f"{gtg.language.texts.get('screen_width')}: {len_x}\t\t")
             self.print_screen_size_preview(gtg.scr.len_y, gtg.scr.len_x)
             self.change_screen_box.print_box(gtg.scr)
             key = keyboard_input.read_keyboard()
@@ -80,4 +82,5 @@ class OptionsMenu:
             if gtg.configurations["language_file"] == self.change_language_box.options[language_file].text:
                 self.change_language_box.active_option = language_file
         new_file = self.change_language_box.access_options(gtg)
-        gtg.configurations["language_file"] = new_file
+        if new_file != "":
+            gtg.configurations["language_file"] = new_file

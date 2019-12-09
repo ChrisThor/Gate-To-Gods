@@ -5,11 +5,12 @@ from screen import Screen
 
 
 class Box:
-    def __init__(self, content, box_width: int, options=[], colour="\033[0m"):
+    def __init__(self, content, box_width: int, options=[], colour="\033[0m", abortable=True):
         if isinstance(content, str):
             content = word.convert_text_to_list(content)
         self.colour = colour
         self.width: int = box_width
+        self.abortable = abortable
         self.options: list = self.set_options(options)
         self.lines: list = word_wrap.wrap(content, box_width)
         self.height_content: int = len(self.lines)
@@ -71,6 +72,8 @@ class Box:
             elif pressed_key == "KEY_ARROW_DOWN":
                 if self.active_option < len(self.options) - 1:
                     self.active_option += 1
+            elif self.abortable and pressed_key == "KEY_ESCAPE":
+                return ""
         return self.options[self.active_option].text
 
     def deactivate_options(self):
