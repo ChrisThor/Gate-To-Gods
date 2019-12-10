@@ -7,7 +7,6 @@ from default_entity import DefaultEntity
 from replay import Replay
 from messagebox import Messagebox
 from screen import Screen
-from randomness import Randomness
 from language import LanguageManagement
 from options_menu import OptionsMenu
 from random import Random
