@@ -5,6 +5,8 @@ class Word:
         self.length = len(self.content)
         for colour_code in colour_codes:
             self.length -= len(colour_code)
+        if "\n" in content:
+            self.length -= 1
 
 
 def convert_text_to_list(text: str) -> list:

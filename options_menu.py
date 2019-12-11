@@ -6,7 +6,9 @@ import os
 class OptionsMenu:
     def __init__(self, gtg):
         headline = gtg.language.texts.get("option_headline")
-        options = [gtg.language.texts.get("option_change_language"), gtg.language.texts.get("option_change_screen"),
+        options = [gtg.language.texts.get("option_change_language"),
+                   gtg.language.texts.get("option_change_screen"),
+                   gtg.language.texts.get("option_input_speed"),
                    gtg.language.texts.get("option_go_back")]
         self.display_box = Box(content=headline, box_width=25, options=options)
         self.change_language_box = Box(content=gtg.language.texts.get("option_new_file"),
@@ -14,6 +16,8 @@ class OptionsMenu:
                                        options=os.listdir(os.getcwd() + "/data/lang"))
         self.change_screen_box = Box(content=gtg.language.texts.get("option_new_screen"),
                                      box_width=27)
+        self.change_input_speed_box = Box(content=f"{gtg.language.texts.get('option_change_input_speed')}\n ",
+                                          box_width=int(len(gtg.language.texts.get("option_change_input_speed")) / 2))
 
     def enter_menu(self, gtg):
         selected_option = ""
@@ -25,6 +29,8 @@ class OptionsMenu:
                 self.change_language(gtg)
             elif selected_option == gtg.language.texts.get("option_change_screen"):
                 self.change_screen_dimensions(gtg)
+            elif selected_option == gtg.language.texts.get("option_input_speed"):
+                self.change_input_speed(gtg)
             elif selected_option == "":
                 return None
         configurations = open("data/config.txt", "w")
@@ -89,3 +95,26 @@ class OptionsMenu:
         new_file = self.change_language_box.access_options(gtg)
         if new_file != "":
             gtg.configurations["language_file"] = new_file
+
+    def change_input_speed(self, gtg):
+        delay = gtg.configurations["input_delay"]
+        self.change_input_speed_box.lines[len(self.change_input_speed_box.lines) - 1] = f"{delay}s". \
+            ljust(self.change_input_speed_box.width)
+        self.change_input_speed_box.colour = gtg.colours.get_random_colour(gtg.rng, True)
+        key = ""
+        while key != "Enter" and key != "Escape":
+            self.change_input_speed_box.print_box(gtg.scr)
+            key = readchar.readkey()
+
+            if key == "Up":
+                delay += 0.0125
+            elif key == "Down":
+                delay -= 0.0125
+            delay = delay.__round__(4)
+            if delay < 0 or delay == 0.0:
+                delay = 0
+            self.change_input_speed_box.lines[len(self.change_input_speed_box.lines) - 1] = f"{delay}s".\
+                ljust(self.change_input_speed_box.width)
+        if key == "Enter":
+            gtg.configurations["input_delay"] = delay
+
