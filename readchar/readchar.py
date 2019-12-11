@@ -78,6 +78,12 @@ if sys.platform in ('win32', 'cygwin'):
         20704: key_windows.DOWN,
         19424: key_windows.LEFT,
         19936: key_windows.RIGHT,
+
+        # These keys are used in the Windows Terminal (Preview)
+        18432: key_windows.UP,
+        19200: key_windows.LEFT,
+        20480: key_windows.DOWN,
+        19712: key_windows.RIGHT
     }
 
     def readkey(getchar_fn=None):
