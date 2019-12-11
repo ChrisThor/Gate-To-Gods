@@ -8,9 +8,11 @@ class Player(Entity):
         else:
             colour = colours.get_colour("white")
 
-        receiver = colour + "HP: " + str(self.hp).rjust(len(str(self.max_hp))) + "/" + str(self.max_hp)
+        receiver = ""
         if self.show_coordinates:
             receiver += "\tX: " + str(self.pos_x) + " Y: " + str(self.pos_y).ljust(4, " ")
+        else:
+            receiver += f"{colour}HP: {str(self.hp).rjust(len(str(self.max_hp)))}/{self.max_hp}".ljust(scr.len_x)
         receiver += "\n" + colours.get_colour("white")
         receiver += scr.get_separator()
         return receiver
