@@ -19,7 +19,7 @@ class Input:
         self.previous_slide = "p"
         self.enter_exit = "<"
         self.enter_entrance = ">"
-        self.options = "KEY_ESCAPE"
+        self.options = "Escape"
         self.show_coordinates = "#"
 
     def get_direction_value(self, pressed_key: str, pos_y: int, pos_x: int):

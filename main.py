@@ -10,7 +10,7 @@ from screen import Screen
 from language import LanguageManagement
 from options_menu import OptionsMenu
 from random import Random
-import keyboard_input
+import readchar
 import time
 
 
@@ -138,7 +138,7 @@ class GateToGods:
 
         while playing:
             self.scr.print(record, self)
-            self.user_input = keyboard_input.read_keyboard()
+            self.user_input = readchar.readkey()
 
             playing, skip_npc_turn = self.player_turn(playing, skip_npc_turn)
             if playing:

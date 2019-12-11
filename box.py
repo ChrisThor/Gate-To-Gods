@@ -1,6 +1,6 @@
 import word_wrap
 import word
-import keyboard_input
+import readchar
 from screen import Screen
 
 
@@ -61,18 +61,18 @@ class Box:
 
     def access_options(self, gtg) -> str:
         pressed_key = ""
-        while pressed_key != "KEY_ENTER":
+        while pressed_key != "Enter":
             self.deactivate_options()
             self.options[self.active_option].toggle()
             self.print_box(gtg.scr)
-            pressed_key = keyboard_input.read_keyboard()
-            if pressed_key == "KEY_ARROW_UP":
+            pressed_key = readchar.readkey()
+            if pressed_key == "Up":
                 if self.active_option != 0:
                     self.active_option -= 1
-            elif pressed_key == "KEY_ARROW_DOWN":
+            elif pressed_key == "Down":
                 if self.active_option < len(self.options) - 1:
                     self.active_option += 1
-            elif self.abortable and pressed_key == "KEY_ESCAPE":
+            elif self.abortable and pressed_key == "Escape":
                 return ""
         return self.options[self.active_option].text
 

@@ -1,5 +1,5 @@
 from box import Box
-import keyboard_input
+import readchar
 import os
 
 
@@ -41,20 +41,20 @@ class OptionsMenu:
         lower_x_limit = 33
         lower_y_limit = 11
         self.change_screen_box.colour = gtg.colours.get_random_colour(gtg.rng, True)
-        while key != "KEY_ENTER" and key != "KEY_ESCAPE":
+        while key != "Enter" and key != "Escape":
             print(f"\033[H{gtg.language.texts.get('screen_height')}: {len_y} "
                   f"{gtg.language.texts.get('screen_width')}: {len_x}\t\t")
             self.print_screen_size_preview(gtg.scr.len_y, gtg.scr.len_x)
             self.change_screen_box.print_box(gtg.scr)
-            key = keyboard_input.read_keyboard()
+            key = readchar.readkey()
 
-            if key == "KEY_ARROW_UP":
+            if key == "Up":
                 len_y -= 1
-            elif key == "KEY_ARROW_DOWN":
+            elif key == "Down":
                 len_y += 1
-            elif key == "KEY_ARROW_LEFT":
+            elif key == "Left":
                 len_x -= 1
-            elif key == "KEY_ARROW_RIGHT":
+            elif key == "Right":
                 len_x += 1
             if len_y < lower_y_limit:
                 len_y = lower_y_limit
@@ -63,7 +63,7 @@ class OptionsMenu:
 
             gtg.scr.change_size(len_y, len_x)
         # print(gtg.colours.clear())
-        if key == "KEY_ESCAPE":
+        if key == "Escape":
             gtg.scr.change_size(original_y, original_x)
         else:
             gtg.configurations["screen_height"] = len_y
