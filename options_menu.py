@@ -42,7 +42,7 @@ class OptionsMenu:
         lower_y_limit = 11
         self.change_screen_box.colour = gtg.colours.get_random_colour(gtg.rng, True)
         while key != "KEY_ENTER" and key != "KEY_ESCAPE":
-            print(f"\033[H{gtg.colours.clear()}{gtg.language.texts.get('screen_height')}: {len_y} "
+            print(f"\033[H{gtg.language.texts.get('screen_height')}: {len_y} "
                   f"{gtg.language.texts.get('screen_width')}: {len_x}\t\t")
             self.print_screen_size_preview(gtg.scr.len_y, gtg.scr.len_x)
             self.change_screen_box.print_box(gtg.scr)
@@ -62,7 +62,7 @@ class OptionsMenu:
                 len_x = lower_x_limit
 
             gtg.scr.change_size(len_y, len_x)
-        print(gtg.colours.clear())
+        # print(gtg.colours.clear())
         if key == "KEY_ESCAPE":
             gtg.scr.change_size(original_y, original_x)
         else:
@@ -73,6 +73,11 @@ class OptionsMenu:
         len_y -= 1
         y_offset = 3
         symbol = "*"
+        print("\033[H")
+        for i in range(len_y + y_offset):
+            for j in range(len_x + 1):
+                print(" ", end="")
+            print()
         print(f"\033[{y_offset};0H{symbol}\033[{y_offset};{len_x}H{symbol}\033[{y_offset + len_y};0H{symbol}"
               f"\033[{y_offset + len_y};{len_x}H{symbol}")
 
