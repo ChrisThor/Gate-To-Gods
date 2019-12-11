@@ -11,6 +11,7 @@ from language import LanguageManagement
 from options_menu import OptionsMenu
 from random import Random
 import readchar
+import input_delay
 import time
 
 
@@ -128,6 +129,7 @@ class GateToGods:
         playing = True
         skip_npc_turn = False
         record = False
+        last_input_time = time.time()
 
         if self.log_filename != "":
             self.log_file = open(self.log_filename, "w")
@@ -138,7 +140,10 @@ class GateToGods:
 
         while playing:
             self.scr.print(record, self)
+
+            input_delay.apply_delay(self.configurations["input_delay"], last_input_time)
             self.user_input = readchar.readkey()
+            last_input_time = time.time()
 
             playing, skip_npc_turn = self.player_turn(playing, skip_npc_turn)
             if playing:
@@ -235,7 +240,14 @@ def read_configuration_file():
             except ValueError or IndexError:
                 print(error_text + "\"screen_width\"")
                 exit(-1)
-    if len(configurations) < 3:
+        elif "input_delay" in line:
+            try:
+                configurations["input_delay"] = float(line.split("=")[1])
+            except ValueError or IndexError:
+                print(error_text + "\"input_delay\"")
+                exit(-1)
+
+    if len(configurations) < 4:
         print("config.txt is incomplete.")
         exit(-1)
     return configurations
