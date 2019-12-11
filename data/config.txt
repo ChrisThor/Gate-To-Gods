@@ -1,4 +1,4 @@
 language_file=en_en.txt
 screen_height=21
 screen_width=81
-input_delay=0.2
+input_delay=0.1625
