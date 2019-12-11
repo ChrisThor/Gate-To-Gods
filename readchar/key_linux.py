@@ -1,0 +1,144 @@
+ANSI_SEQUENCES = {
+    '\x1b\x1b': "Escape",
+
+    '\x00': "ControlSpace",  # Control-Space (Also for Ctrl-@)
+    '\x01': "ControlA",  # Control-A (home)
+    '\x02': "ControlB",  # Control-B (emacs cursor left)
+    '\x03': "ControlC",  # Control-C (interrupt)
+    '\x04': "ControlD",  # Control-D (exit)
+    '\x05': "ControlE",  # Contrel-E (end)
+    '\x06': "ControlF",  # Control-F (cursor forward)
+    '\x07': "ControlG",  # Control-G
+    '\x08': "ControlH",  # Control-H (8) (Identical to '\b')
+    '\x09': "Tab",  # Control-I (9) (Identical to '\t')
+    '\x0a': "ControlJ",  # Control-J (10) (Identical to '\n')
+    '\x0b': "ControlK",  # Control-K (delete until end of line; vertical tab)
+    '\x0c': "ControlL",  # Control-L (clear; form feed)
+    '\x0d': "Enter",  # Control-M (13) (Identical to '\r')
+    '\x0e': "ControlN",  # Control-N (14) (history forward)
+    '\x0f': "ControlO",  # Control-O (15)
+    '\x10': "ControlP",  # Control-P (16) (history back)
+    '\x11': "ControlQ",  # Control-Q
+    '\x12': "ControlR",  # Control-R (18) (reverse search)
+    '\x13': "ControlS",  # Control-S (19) (forward search)
+    '\x14': "ControlT",  # Control-T
+    '\x15': "ControlU",  # Control-U
+    '\x16': "ControlV",  # Control-V
+    '\x17': "ControlW",  # Control-W
+    '\x18': "ControlX",  # Control-X
+    '\x19': "ControlY",  # Control-Y (25)
+    '\x1a': "ControlZ",  # Control-Z
+
+    '\x1c': "ControlBackslash",  # Both Control-\ and Ctrl-|
+    '\x1d': "ControlSquareClose",  # Control-]
+    '\x1e': "ControlCircumflex",  # Control-^
+    '\x1f': "ControlUnderscore",  # Control-underscore (Also for Ctrl-hypen.)
+    '\x7f': "Backspace",  # (127) Backspace
+    '\x1b[A': "Up",
+    '\x1b[B': "Down",
+    '\x1b[C': "Right",
+    '\x1b[D': "Left",
+    '\x1b[H': "Home",
+    '\x1bOH': "Home",
+    '\x1b[F': "End",
+    '\x1bOF': "End",
+    '\x1b[3~': "Delete",
+    '\x1b[3;2~': "ShiftDelete",  # xterm, gnome-terminal.
+    '\x1b[3;5~': "ControlDelete",  # xterm, gnome-terminal.
+    '\x1b[1~': "Home",  # tmux
+    '\x1b[4~': "End",  # tmux
+    '\x1b[5~': "PageUp",
+    '\x1b[6~': "PageDown",
+    '\x1b[7~': "Home",  # xrvt
+    '\x1b[8~': "End",  # xrvt
+    '\x1b[Z': "BackTab",  # shift + tab
+    '\x1b[2~': "Insert",
+
+    '\x1bOP': "F1",
+    '\x1bOQ': "F2",
+    '\x1bOR': "F3",
+    '\x1bOS': "F4",
+    '\x1b[[A': "F1",  # Linux console.
+    '\x1b[[B': "F2",  # Linux console.
+    '\x1b[[C': "F3",  # Linux console.
+    '\x1b[[D': "F4",  # Linux console.
+    '\x1b[[E': "F5",  # Linux console.
+    '\x1b[11~': "F1",  # rxvt-unicode
+    '\x1b[12~': "F2",  # rxvt-unicode
+    '\x1b[13~': "F3",  # rxvt-unicode
+    '\x1b[14~': "F4",  # rxvt-unicode
+    '\x1b[15~': "F5",
+    '\x1b[17~': "F6",
+    '\x1b[18~': "F7",
+    '\x1b[19~': "F8",
+    '\x1b[20~': "F9",
+    '\x1b[21~': "F10",
+    '\x1b[23~': "F11",
+    '\x1b[24~': "F12",
+    '\x1b[25~': "F13",
+    '\x1b[26~': "F14",
+    '\x1b[28~': "F15",
+    '\x1b[29~': "F16",
+    '\x1b[31~': "F17",
+    '\x1b[32~': "F18",
+    '\x1b[33~': "F19",
+    '\x1b[34~': "F20",
+
+    # Xterm
+    '\x1b[1;2P': "F13",
+    '\x1b[1;2Q': "F14",
+    # '\x1b[1;2R': Keys.F15,  # Conflicts with CPR response.
+    '\x1b[1;2S': "F16",
+    '\x1b[15;2~': "F17",
+    '\x1b[17;2~': "F18",
+    '\x1b[18;2~': "F19",
+    '\x1b[19;2~': "F20",
+    '\x1b[20;2~': "F21",
+    '\x1b[21;2~': "F22",
+    '\x1b[23;2~': "F23",
+    '\x1b[24;2~': "F24",
+
+    '\x1b[1;5A': "ControlUp",     # Cursor Mode
+    '\x1b[1;5B': "ControlDown",   # Cursor Mode
+    '\x1b[1;5C': "ControlRight",  # Cursor Mode
+    '\x1b[1;5D': "ControlLeft",   # Cursor Mode
+
+    '\x1b[1;2A': "ShiftUp",
+    '\x1b[1;2B': "ShiftDown",
+    '\x1b[1;2C': "ShiftRight",
+    '\x1b[1;2D': "ShiftLeft",
+
+    # Tmux sends following keystrokes when control+arrow is pressed, but for
+    # Emacs ansi-term sends the same sequences for normal arrow keys. Consider
+    # it a normal arrow press, because that's more important.
+    '\x1bOA': "Up",
+    '\x1bOB': "Down",
+    '\x1bOC': "Right",
+    '\x1bOD': "Left",
+
+    '\x1b[5A': "ControlUp",
+    '\x1b[5B': "ControlDown",
+    '\x1b[5C': "ControlRight",
+    '\x1b[5D': "ControlLeft",
+
+    '\x1b[200~': "BracketedPaste",  # Start of bracketed paste.
+
+    # Meta + arrow keys. Several terminals handle this differently.
+    # The following sequences are for xterm and gnome-terminal.
+    #     (Iterm sends ESC followed by the normal arrow_up/down/left/right
+    #     sequences, and the OSX Terminal sends ESCb and ESCf for "alt
+    #     arrow_left" and "alt arrow_right." We don't handle these
+    #     explicitely, in here, because would could not distinguesh between
+    #     pressing ESC (to go to Vi navigation mode), followed by just the
+    #     'b' or 'f' key. These combinations are handled in
+    #     the input processor.)
+    '\x1b[1;3D': ("Escape", "Left"),
+    '\x1b[1;3C': ("Escape", "Right"),
+    '\x1b[1;3A': ("Escape", "Up"),
+    '\x1b[1;3B': ("Escape", "Down"),
+
+    # Sequences generated by numpad 5. Not sure what it means. (It doesn't
+    # appear in 'infocmp'. Just ignore.
+    '\x1b[E': "Ignore",  # Xterm.
+    '\x1b[G': "Ignore",  # Linux console.
+}

@@ -3,7 +3,10 @@
 ### Getting started
 
 To start the game, Python 3 needs to be installed. 
-Additionally, a console that support ANSI escape codes like [Aniscon](https://github.com/adoxa/ansicon) is recommended.
+On Windows, a console that support ANSI escape codes like [Aniscon](https://github.com/adoxa/ansicon) is recommended.
+You can also use cmd if you activate the colours in the console itself.
+Linux consoles supports ANSI escape codes by default.
+
 Select the file "main.py" and start it with a parameter, which is the map that will first be opened by the game.
 
 Additionally, it is possible to use additional parameters. Gate To Gods uses a Random Number Generator (RNG) that uses a seed.
@@ -33,6 +36,5 @@ Again, the file which should be replayed needs to be the following parameter.
 - Enter new map: < or >
 - Next slide: n
 - Previous slide: p
-- Toggle better colour mode: b
 - Exit game: x
 

@@ -8,7 +8,7 @@ class LanguageManagement:
         self.texts = {}
         language_file = None
         try:
-            language_file = open("data/" + filename, "r")
+            language_file = open("data/lang/" + filename, "r")
         except FileNotFoundError:
             print("\"" + filename + "\" could not be found.")
             exit(-1)
