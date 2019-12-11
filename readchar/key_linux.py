@@ -1,5 +1,5 @@
 ANSI_SEQUENCES = {
-    '\x1b': "Escape",
+    '\x1b\x1b': "Escape",
 
     '\x00': "ControlSpace",  # Control-Space (Also for Ctrl-@)
     '\x01': "ControlA",  # Control-A (home)
