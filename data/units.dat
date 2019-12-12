@@ -11,6 +11,7 @@ Person:
   name: Person
   effects:
     - SlowHealing
+    - SmallDamageBoost
 PrairieDog:
   healthPoints: 20
   damage: (1-2)

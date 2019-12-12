@@ -10,3 +10,8 @@ InstantHeal:
   duration: 1
   cooldown: 0
   hp_gain: 1000000
+SmallDamageBoost:
+  type: DamageBoostEffect
+  name: Leicht erhöhter Schaden
+  duration: 5
+  damage_boost: 2

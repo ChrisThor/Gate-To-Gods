@@ -33,3 +33,4 @@ Person=person
 Player=player
 SlowHealing=Slow Healing
 InstantHeal=Instant Heal
+SmallDamageBoost=Small Damage Buff

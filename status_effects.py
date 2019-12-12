@@ -30,8 +30,12 @@ class StatusEffect:
     def set_cooldown(self, gtg):
         self.cooldown = gtg.rng.randint(self.min_cooldown, self.max_cooldown)
 
+    def reverse(self):
+        pass
+
 
 def remove_effect_from_entity(entity, effect: StatusEffect):
+    effect.reverse()
     entity.effects_on_entity.remove(effect)
 
 
@@ -46,36 +50,83 @@ class HealingEffect(StatusEffect):
             entity.add_hp(gtg.rng.randint(self.min_hp_gain, self.max_hp_gain))
 
 
-def set_healing_effect_values(effect_args: dict) -> dict:
-    for effect_id in effect_args:
-        if "-" in str(effect_args[effect_id]["hp_gain"]):
-            effect_args[effect_id]["min_hp_gain"] = int(effect_args[effect_id]["hp_gain"].split("-")[0])
-            effect_args[effect_id]["max_hp_gain"] = int(effect_args[effect_id]["hp_gain"].split("-")[1])
-        else:
-            effect_args[effect_id]["min_hp_gain"] = effect_args[effect_id]["hp_gain"]
-            effect_args[effect_id]["max_hp_gain"] = effect_args[effect_id]["hp_gain"]
-        del effect_args[effect_id]["hp_gain"]
+class DamageBoostEffect(StatusEffect):
+    def __init__(self, effect_id, effect_name, entity, duration, min_boost, max_boost):
+        super().__init__(effect_id, effect_name, entity, duration, 0, 0)
+        self.min_boost = min_boost
+        self.max_boost = max_boost
+        self.original_min_damage = entity.minimum_damage
+        self.original_max_damage = entity.maximum_damage
 
-        if "-" in str(effect_args[effect_id]["cooldown"]):
-            effect_args[effect_id]["min_cooldown"] = int(effect_args[effect_id]["cooldown"].split("-")[0])
-            effect_args[effect_id]["max_cooldown"] = int(effect_args[effect_id]["cooldown"].split("-")[1])
-        else:
-            effect_args[effect_id]["min_cooldown"] = effect_args[effect_id]["cooldown"]
-            effect_args[effect_id]["max_cooldown"] = effect_args[effect_id]["cooldown"]
-        del effect_args[effect_id]["cooldown"]
+    def apply(self, gtg, entity):
+        if self.tick_cooldown(gtg):
+            if self.enitiy.minimum_damage != self.min_boost + self.original_min_damage and \
+                    self.enitiy.maximum_damage != self.max_boost + self.original_max_damage:
+                self.enitiy.minimum_damage = self.original_min_damage + self.min_boost
+                self.enitiy.maximum_damage = self.original_max_damage + self.max_boost
+
+    def reverse(self):
+        self.enitiy.minimum_damage = self.original_min_damage
+        self.enitiy.maximum_damage = self.original_max_damage
+
+
+def set_healing_effect_values(effect_args: dict) -> dict:
+    if "-" in str(effect_args["hp_gain"]):
+        effect_args["min_hp_gain"] = int(effect_args["hp_gain"].split("-")[0])
+        effect_args["max_hp_gain"] = int(effect_args["hp_gain"].split("-")[1])
+    else:
+        effect_args["min_hp_gain"] = effect_args["hp_gain"]
+        effect_args["max_hp_gain"] = effect_args["hp_gain"]
+    del effect_args["hp_gain"]
+
+    if "-" in str(effect_args["cooldown"]):
+        effect_args["min_cooldown"] = int(effect_args["cooldown"].split("-")[0])
+        effect_args["max_cooldown"] = int(effect_args["cooldown"].split("-")[1])
+    else:
+        effect_args["min_cooldown"] = effect_args["cooldown"]
+        effect_args["max_cooldown"] = effect_args["cooldown"]
+    del effect_args["cooldown"]
 
     return effect_args
 
 
+def set_damage_boost_effect_values(effect_args: dict) -> dict:
+    if "-" in str(effect_args["damage_boost"]):
+        effect_args["min_boost"] = int(effect_args["damage_boost"].split("-")[0])
+        effect_args["max_boost"] = int(effect_args["damage_boost"].split("-")[1])
+    else:
+        effect_args["min_boost"] = effect_args["damage_boost"]
+        effect_args["max_boost"] = effect_args["damage_boost"]
+    del effect_args["damage_boost"]
+    return effect_args
+
+
+def set_effect_values(effects: dict) -> dict:
+    for effect_id in effects:
+        if effects[effect_id]["type"] == "HealingEffect":
+            effects[effect_id] = set_healing_effect_values(effects[effect_id])
+        elif effects[effect_id]["type"] == "DamageBoostEffect":
+            effects[effect_id] = set_damage_boost_effect_values(effects[effect_id])
+    return effects
+
+
 def create_effect(effect_args: dict, afflicted_entity):
-    HealingEffect(effect_id=effect_args["effect_id"],
-                  effect_name=effect_args["name"],
-                  entity=afflicted_entity,
-                  duration=effect_args["duration"],
-                  min_cooldown=effect_args["min_cooldown"],
-                  max_cooldown=effect_args["max_cooldown"],
-                  min_hp_gain=effect_args["min_hp_gain"],
-                  max_hp_gain=effect_args["max_hp_gain"])
+    if effect_args["type"] == "HealingEffect":
+        HealingEffect(effect_id=effect_args["effect_id"],
+                      effect_name=effect_args["name"],
+                      entity=afflicted_entity,
+                      duration=effect_args["duration"],
+                      min_cooldown=effect_args["min_cooldown"],
+                      max_cooldown=effect_args["max_cooldown"],
+                      min_hp_gain=effect_args["min_hp_gain"],
+                      max_hp_gain=effect_args["max_hp_gain"])
+    elif effect_args["type"] == "DamageBoostEffect":
+        DamageBoostEffect(effect_id=effect_args["effect_id"],
+                          effect_name=effect_args["name"],
+                          entity=afflicted_entity,
+                          duration=effect_args["duration"],
+                          min_boost=effect_args["min_boost"],
+                          max_boost=effect_args["max_boost"])
 
 
 def apply_status_effects(gtg):
