@@ -39,4 +39,5 @@ class Player(Entity):
             if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
                 damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
                 gtg.msg_box.attack_npc(gtg, damage, npc)
-                npc.change_hp(gtg, damage)
+                npc.reduce_hp(gtg, damage)
+                self.apply_status_effect_on_entity(npc, gtg)

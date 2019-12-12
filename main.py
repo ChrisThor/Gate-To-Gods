@@ -10,6 +10,7 @@ from screen import Screen
 from language import LanguageManagement
 from options_menu import OptionsMenu
 from random import Random
+import status_effects
 import readchar
 import input_delay
 import time
@@ -19,6 +20,7 @@ class GateToGods:
     def __init__(self, seed: int, log_filename: str):
         self.maps = []
         self.default_entities = []
+        self.default_status_effects = []
         self.user_input = ""
         self.configurations = read_configuration_file()
         self.language = LanguageManagement(self.configurations.get("language_file"))
@@ -30,6 +32,7 @@ class GateToGods:
         self.maps.append(Map(mapname, self))
         self.current_level = self.maps[0]
         self.rng = Random(seed)
+        self.all_status_effects = status_effects.set_healing_effect_values(status_effects.read_status_effects_dat())
         self.brezelheim = Brezelheim(self.current_level)
         self.scr = Screen(self.configurations.get("screen_height"), self.configurations.get("screen_width"))
         self.msg_box = Messagebox(self.scr.len_x)
@@ -56,6 +59,7 @@ class GateToGods:
                 maximum_damage = -1
                 range_of_vision = -1
                 aggression = False
+                effects = {}
                 line += 1
                 while line < len(lines) and lines[line][0] == " ":
                     if "healthPoints" in lines[line]:
@@ -96,6 +100,13 @@ class GateToGods:
                             name = lines[line].split(":")[1].replace("\n", "")
                             while name[0] == " ":
                                 name = name[1:]     # if a blank is in front of a name, it gets removed
+                    elif "effects" in lines[line]:
+                        line += 1
+                        if "-" in lines[line]:
+                            effect = lines[line].split("-")[1].replace("\n", "")
+                            while effect[0] == " ":
+                                effect = effect[1:]
+                            effects[effect] = {"effect_id": effect}
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
                     print(self.language.texts.get("unitsdat_incomplete_definition", self.language.undefined)
@@ -103,7 +114,7 @@ class GateToGods:
                     exit(-1)
                 else:
                     self.default_entities.append(DefaultEntity(entity_id, name, range_of_vision, hp, minimum_damage,
-                                                               maximum_damage, aggression))
+                                                               maximum_damage, aggression, effects))
                     if line >= len(lines):
                         break
             if not player_defined:
@@ -143,6 +154,10 @@ class GateToGods:
 
             input_delay.apply_delay(self.configurations["input_delay"], last_input_time)
             self.user_input = readchar.readkey()
+            # try:
+            #     self.user_input = input()[0]
+            # except IndexError:
+            #     self.user_input = " "
             last_input_time = time.time()
 
             playing, skip_npc_turn = self.player_turn(playing, skip_npc_turn)
@@ -151,6 +166,7 @@ class GateToGods:
                     self.current_level.npc_actions(self)
                 else:
                     skip_npc_turn = False
+                status_effects.apply_status_effects(self)
                 self.current_level.build_map_colour(self.brezelheim, self.player, self.colours)
                 if not self.player.is_alive():
                     self.scr.print(record, self)

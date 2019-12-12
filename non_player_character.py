@@ -2,8 +2,8 @@ from entity import Entity
 
 
 class NonPlayerCharacter(Entity):
-    def __init__(self, entity_id, pos_y, pos_x, symbol, aggressive, name, range_of_vision, hp, minimum_damage, maximum_damage):
-        Entity.__init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage)
+    def __init__(self, entity_id, pos_y, pos_x, symbol, aggressive, name, range_of_vision, hp, minimum_damage, maximum_damage, effects):
+        Entity.__init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects)
         self.name = name
         self.aggressive = aggressive
         self.visible = []
@@ -12,7 +12,7 @@ class NonPlayerCharacter(Entity):
         self.alive = False
         gtg.msg_box.npc_death(gtg, self)
 
-    def change_hp(self, gtg, difference):
+    def reduce_hp(self, gtg, difference):
         if not self.aggressive:
             self.aggressive = True
         self.hp -= difference
@@ -59,7 +59,8 @@ class NonPlayerCharacter(Entity):
             if damage > gtg.player.hp:
                 damage = gtg.player.hp
             gtg.msg_box.attack_player_m(gtg, self, damage)
-            gtg.player.change_hp(gtg, damage)
+            gtg.player.reduce_hp(gtg, damage)
+            self.apply_status_effect_on_entity(gtg.player, gtg)
 
     def confirm_pos(self, pos_y, pos_x):
         if self.pos_y == pos_y and self.pos_x == pos_x:

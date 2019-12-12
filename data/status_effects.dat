@@ -1,0 +1,10 @@
+SlowHealing:
+  type: HealingEffect
+  duration: 40
+  cooldown: 4-5
+  hp_gain: 1-2
+InstantHeal:
+  type: HealingEffect
+  duration: 1
+  cooldown: 0
+  hp_gain: 1000000
