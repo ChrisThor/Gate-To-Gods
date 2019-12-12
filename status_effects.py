@@ -202,9 +202,11 @@ def read_status_effects_dat(gtg):
 def is_sorted_by_duration(effects):
     try:
         highest_value = effects[0].duration
-        for effect_number in range(1, len(effects)):
+        for effect_number in range(0, len(effects)):
             if effects[effect_number].duration > highest_value:
                 return False
+            else:
+                highest_value = effects[effect_number].duration
     except IndexError:
         pass
     return True
