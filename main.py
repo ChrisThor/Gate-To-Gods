@@ -155,11 +155,11 @@ class GateToGods:
             status_effects.remove_status_effects(self)
 
             input_delay.apply_delay(self.configurations["input_delay"], last_input_time)
-            # self.user_input = readchar.readkey()
-            try:
-                self.user_input = input()[0]
-            except IndexError:
-                self.user_input = " "
+            self.user_input = readchar.readkey()
+            # try:
+            #     self.user_input = input()[0]
+            # except IndexError:
+            #     self.user_input = " "
             last_input_time = time.time()
 
             playing, skip_npc_turn = self.player_turn(playing, skip_npc_turn)
