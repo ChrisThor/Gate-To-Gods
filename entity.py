@@ -17,6 +17,7 @@ class Entity:
         self.alive = True
         self.effects_on_entity = []
         self.afflicting_on_hit = effects
+        self.invincible = False
 
     def reduce_hp(self, gtg, difference):
         self.hp -= difference

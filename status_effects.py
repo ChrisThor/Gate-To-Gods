@@ -70,6 +70,19 @@ class DamageBoostEffect(StatusEffect):
         self.enitiy.maximum_damage = self.original_max_damage
 
 
+class InvincibilityEffect(StatusEffect):
+    def __init__(self, effect_id, effect_name, entity, duration):
+        super().__init__(effect_id, effect_name, entity, duration, 0, 0)
+
+    def apply(self, gtg, entity):
+        if self.tick_cooldown(gtg):
+            if not self.enitiy.invincible:
+                self.enitiy.invincible = True
+
+    def reverse(self):
+        self.enitiy.invincible = False
+
+
 def set_healing_effect_values(effect_args: dict) -> dict:
     if "-" in str(effect_args["hp_gain"]):
         effect_args["min_hp_gain"] = int(effect_args["hp_gain"].split("-")[0])
@@ -127,6 +140,11 @@ def create_effect(effect_args: dict, afflicted_entity):
                           duration=effect_args["duration"],
                           min_boost=effect_args["min_boost"],
                           max_boost=effect_args["max_boost"])
+    elif effect_args["type"] == "Invincibility":
+        InvincibilityEffect(effect_id=effect_args["effect_id"],
+                            effect_name=effect_args["name"],
+                            entity=afflicted_entity,
+                            duration=effect_args["duration"])
 
 
 def apply_status_effects(gtg):

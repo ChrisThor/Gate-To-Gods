@@ -37,7 +37,10 @@ class Player(Entity):
         pos_y, pos_x = gtg.keys.get_direction_value(pressed_key, self.pos_y, self.pos_x)
         for npc in gtg.current_level.npcs:
             if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
-                damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
-                gtg.msg_box.attack_npc(gtg, damage, npc)
-                npc.reduce_hp(gtg, damage)
-                self.apply_status_effect_on_entity(npc, gtg)
+                if not npc.invincible:
+                    damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
+                    gtg.msg_box.attack_npc(gtg, damage, npc)
+                    npc.reduce_hp(gtg, damage)
+                    self.apply_status_effect_on_entity(npc, gtg)
+                else:
+                    pass    # TODO: NPC is invincible message

@@ -55,12 +55,15 @@ class NonPlayerCharacter(Entity):
 
     def attack_player(self, gtg):
         if self.aggressive:
-            damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
-            if damage > gtg.player.hp:
-                damage = gtg.player.hp
-            gtg.msg_box.attack_player_m(gtg, self, damage)
-            gtg.player.reduce_hp(gtg, damage)
-            self.apply_status_effect_on_entity(gtg.player, gtg)
+            if not gtg.player.invincible:
+                damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
+                if damage > gtg.player.hp:
+                    damage = gtg.player.hp
+                gtg.msg_box.attack_player_m(gtg, self, damage)
+                gtg.player.reduce_hp(gtg, damage)
+                self.apply_status_effect_on_entity(gtg.player, gtg)
+            else:
+                pass    # TODO: Player is invincible message
 
     def confirm_pos(self, pos_y, pos_x):
         if self.pos_y == pos_y and self.pos_x == pos_x:

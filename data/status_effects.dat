@@ -13,5 +13,9 @@ InstantHeal:
 SmallDamageBoost:
   type: DamageBoostEffect
   name: Leicht erhöhter Schaden
-  duration: 5
+  duration: 3
   damage_boost: 2
+Invincibility:
+  type: Invincibility
+  name: Unverwundbar
+  duration: 2
