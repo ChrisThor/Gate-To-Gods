@@ -49,9 +49,10 @@ class Entity:
     def apply_status_effect_on_entity(self, entity, gtg) -> bool:
         applied = False
         for effect in self.afflicting_on_hit:
+            effect_name = gtg.all_status_effects[effect]["name"]
             allowed_to_apply = True
             for enitiy_effect in entity.effects_on_entity:
-                if enitiy_effect.effect_id == effect:
+                if enitiy_effect.effect_name == effect_name:
                     # print("HAB DICH GEFUNDEN!" + enitiy_effect.name)
                     allowed_to_apply = False
                     break

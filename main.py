@@ -101,11 +101,13 @@ class GateToGods:
                                 name = name[1:]     # if a blank is in front of a name, it gets removed
                     elif "effects" in lines[line]:
                         line += 1
-                        if "-" in lines[line]:
+                        while "-" in lines[line]:
                             effect = lines[line].split("-")[1].replace("\n", "")
                             while effect[0] == " ":
                                 effect = effect[1:]
                             effects[effect] = {"effect_id": effect}
+                            line += 1
+                        line -= 1
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
                     print(self.language.texts.get("unitsdat_incomplete_definition", self.language.undefined)
