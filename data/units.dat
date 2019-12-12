@@ -9,6 +9,8 @@ Person:
   fieldOfVision: 3
   hostile: false
   name: Person
+  effects:
+    - SlowHealing
 PrairieDog:
   healthPoints: 20
   damage: (1-2)

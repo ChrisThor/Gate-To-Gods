@@ -20,7 +20,6 @@ class GateToGods:
     def __init__(self, seed: int, log_filename: str):
         self.maps = []
         self.default_entities = []
-        self.default_status_effects = []
         self.user_input = ""
         self.configurations = read_configuration_file()
         self.language = LanguageManagement(self.configurations.get("language_file"))
@@ -32,7 +31,7 @@ class GateToGods:
         self.maps.append(Map(mapname, self))
         self.current_level = self.maps[0]
         self.rng = Random(seed)
-        self.all_status_effects = status_effects.set_healing_effect_values(status_effects.read_status_effects_dat())
+        self.all_status_effects = status_effects.set_healing_effect_values(status_effects.read_status_effects_dat(self))
         self.brezelheim = Brezelheim(self.current_level)
         self.scr = Screen(self.configurations.get("screen_height"), self.configurations.get("screen_width"))
         self.msg_box = Messagebox(self.scr.len_x)

@@ -90,7 +90,7 @@ def apply_status_effects(gtg):
                 remove_effect_from_entity(npc, effect)
 
 
-def read_status_effects_dat():
+def read_status_effects_dat(gtg):
     file = None
     try:
         file = open("data/status_effects.dat", "r")
@@ -108,6 +108,9 @@ def read_status_effects_dat():
         while line < len(lines) and lines[line][0] == " ":
             split_line = lines[line].split(":")
             effect_property = split_line[1].replace("\n", "")
+            if "name" in split_line[0]:
+                if effect_properties["effect_id"] in gtg.language.texts:
+                    effect_property = gtg.language.texts[effect_properties["effect_id"]]
             while effect_property[0] == " ":
                 effect_property = effect_property[1:]
             try:
@@ -119,7 +122,3 @@ def read_status_effects_dat():
             line += 1
         effect_templates[effect_properties["effect_id"]] = effect_properties
     return effect_templates
-
-
-if __name__ == '__main__':
-    read_status_effects_dat()

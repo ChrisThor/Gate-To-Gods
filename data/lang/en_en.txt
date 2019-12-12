@@ -31,3 +31,5 @@ RagedDrunkard=raged drunkard
 PrairieDog=prairie dog
 Person=person
 Player=player
+SlowHealing=Slow Healing
+InstantHeal=Instant Heal
