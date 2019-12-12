@@ -101,7 +101,7 @@ class GateToGods:
                                 name = name[1:]     # if a blank is in front of a name, it gets removed
                     elif "effects" in lines[line]:
                         line += 1
-                        while "-" in lines[line]:
+                        while line < len(lines) and "-" in lines[line]:
                             effect = lines[line].split("-")[1].replace("\n", "")
                             while effect[0] == " ":
                                 effect = effect[1:]
