@@ -166,9 +166,9 @@ class GateToGods:
             if playing:
                 if not skip_npc_turn:
                     self.current_level.npc_actions(self)
+                    status_effects.apply_status_effects(self)
                 else:
                     skip_npc_turn = False
-                status_effects.apply_status_effects(self)
                 self.current_level.build_map_colour(self.brezelheim, self.player, self.colours)
                 if not self.player.is_alive():
                     self.scr.print(record, self)

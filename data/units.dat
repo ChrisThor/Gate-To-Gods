@@ -29,5 +29,3 @@ RagedDrunkard:
   fieldOfVision: 2
   hostile: true
   name: Wilder Betrunkener
-  effects:
-    - SlowHealing
