@@ -122,3 +122,24 @@ def read_status_effects_dat(gtg):
             line += 1
         effect_templates[effect_properties["effect_id"]] = effect_properties
     return effect_templates
+
+
+def is_sorted_by_duration(effects):
+    try:
+        highest_value = effects[0].duration
+        for effect_number in range(1, len(effects)):
+            if effects[effect_number].duration > highest_value:
+                return False
+    except IndexError:
+        pass
+    return True
+
+
+def sort_by_duration(effects):
+    while not is_sorted_by_duration(effects):
+        for effect_number in range(1, len(effects)):
+            if effects[effect_number].duration > effects[effect_number - 1].duration:
+                buffer = effects[effect_number]
+                effects[effect_number] = effects[effect_number - 1]
+                effects[effect_number - 1] = buffer
+    return effects

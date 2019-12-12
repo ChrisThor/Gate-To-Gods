@@ -1,4 +1,4 @@
-import sys
+import status_effects
 
 
 class Screen:
@@ -56,7 +56,21 @@ class Screen:
         self.content += self.get_separator()
         self.content += self.get_ground_information(gtg)
         self.content += gtg.msg_box.get_msgbox()
+        self.content += self.build_status_effect_display(gtg)
         return self.content
+
+    def build_status_effect_display(self, gtg):
+        content = ""
+        pos_y = 3
+        player_effects = gtg.player.effects_on_entity
+        player_effects = status_effects.sort_by_duration(player_effects)
+
+        for effect in player_effects:
+            effect_string = f"{effect.effect_name} ({effect.duration})"
+            pos_x = self.len_x + 1 - len(effect_string)
+            content += f"\033[{pos_y};{pos_x}H{effect_string}\n"
+            pos_y += 1
+        return content
 
     def find_entrance(self, pos_y, pos_x):
         for entrance in self.entrances:
