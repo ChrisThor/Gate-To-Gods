@@ -81,11 +81,17 @@ def create_effect(effect_args: dict, afflicted_entity):
 def apply_status_effects(gtg):
     for effect in gtg.player.effects_on_entity:
         effect.apply(gtg, gtg.player)
+    for npc in gtg.current_level.npcs:
+        for effect in npc.effects_on_entity:
+            effect.apply(gtg, npc)
+
+
+def remove_status_effects(gtg):
+    for effect in gtg.player.effects_on_entity:
         if effect.duration <= 0:
             remove_effect_from_entity(gtg.player, effect)
     for npc in gtg.current_level.npcs:
         for effect in npc.effects_on_entity:
-            effect.apply(gtg, npc)
             if effect.duration <= 0:
                 remove_effect_from_entity(npc, effect)
 

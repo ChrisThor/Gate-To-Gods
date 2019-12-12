@@ -57,7 +57,7 @@ class Entity:
                     allowed_to_apply = False
                     break
             if not allowed_to_apply:
-                break
+                continue
             # print(effect)
             status_effects.create_effect(gtg.all_status_effects[effect], entity)
             applied = True
