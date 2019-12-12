@@ -1,6 +1,7 @@
 class StatusEffect:
-    def __init__(self, effect_id, entity, duration: int, min_cooldown: int, max_cooldown):
+    def __init__(self, effect_id, effect_name, entity, duration: int, min_cooldown: int, max_cooldown):
         entity.effects_on_entity.append(self)
+        self.effect_name = effect_name
         self.enitiy = entity
         self.effect_id = effect_id
         self.duration = duration
@@ -35,8 +36,8 @@ def remove_effect_from_entity(entity, effect: StatusEffect):
 
 
 class HealingEffect(StatusEffect):
-    def __init__(self, effect_id, entity, duration, min_cooldown, max_cooldown, min_hp_gain, max_hp_gain):
-        StatusEffect.__init__(self, effect_id, entity, duration, min_cooldown, max_cooldown)
+    def __init__(self, effect_id, effect_name, entity, duration, min_cooldown, max_cooldown, min_hp_gain, max_hp_gain):
+        StatusEffect.__init__(self, effect_id, effect_name, entity, duration, min_cooldown, max_cooldown)
         self.min_hp_gain = min_hp_gain
         self.max_hp_gain = max_hp_gain
 
@@ -68,6 +69,7 @@ def set_healing_effect_values(effect_args: dict) -> dict:
 
 def create_effect(effect_args: dict, afflicted_entity):
     HealingEffect(effect_id=effect_args["effect_id"],
+                  effect_name=effect_args["name"],
                   entity=afflicted_entity,
                   duration=effect_args["duration"],
                   min_cooldown=effect_args["min_cooldown"],
