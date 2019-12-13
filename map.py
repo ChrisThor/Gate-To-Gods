@@ -136,15 +136,18 @@ class Map:
 
     def is_walkable(self, pos_y, pos_x):
         if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
-            if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
-                for door in self.doors:
-                    if door.pos_y == pos_y and door.pos_x == pos_x and door.state == "closed":
-                        return False
-                for npc in self.npcs:
-                    if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
-                        return False
-                return True
-            return False
+            try:
+                if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
+                    for door in self.doors:
+                        if door.pos_y == pos_y and door.pos_x == pos_x and door.state == "closed":
+                            return False
+                    for npc in self.npcs:
+                        if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
+                            return False
+                    return True
+                return False
+            except IndexError:
+                return False
         else:
             return False
 
