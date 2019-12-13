@@ -6,6 +6,7 @@ class NonPlayerCharacter(Entity):
         Entity.__init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects)
         self.name = name
         self.aggressive = aggressive
+        self.hit_by_player = False
         self.visible = []
 
     def kill(self, gtg):
@@ -54,7 +55,7 @@ class NonPlayerCharacter(Entity):
                 self.pos_x = new_x
 
     def attack_player(self, gtg):
-        if self.aggressive:
+        if (not gtg.player.invisible and self.aggressive) or (gtg.player.invisible and self.hit_by_player):
             if not gtg.player.invincible:
                 damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
                 if damage > gtg.player.hp:

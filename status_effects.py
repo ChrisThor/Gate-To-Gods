@@ -96,6 +96,19 @@ class InvincibilityEffect(StatusEffect):
         self.enitiy.invincible = False
 
 
+class InvisibilityEffect(StatusEffect):
+    def __init__(self, effect_id, effect_name, entity, duration, cooldown):
+        super().__init__(effect_id, effect_name, entity, duration, 0, 0, cooldown)
+
+    def apply(self, gtg, entity):
+        if self.do_tick(gtg):
+            if not self.enitiy.invisible:
+                self.enitiy.invisible = True
+
+    def reverse(self):
+        self.enitiy.invisible = False
+
+
 def set_values(effect_args: dict, attribute_name: str, new_attribute: str) -> dict:
     if "-" in str(effect_args[attribute_name]):
         effect_args[f"min_{new_attribute}"] = int(effect_args[attribute_name].split("-")[0])
@@ -116,7 +129,7 @@ def set_effect_values(effects: dict) -> dict:
         elif effects[effect_id]["type"] == "DamageBoostEffect":
             effects[effect_id] = set_values(effects[effect_id], "damage_boost", "boost")
             effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
-        elif effects[effect_id]["type"] == "Invincibility":
+        elif effects[effect_id]["type"] == "Invincibility" or effects[effect_id]["type"] == "Invisibility":
             effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
     return effects
 
@@ -146,6 +159,12 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
                             entity=afflicted_entity,
                             duration=effect_args["duration"],
                             cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
+    elif effect_args["type"] == "Invisibility":
+        InvisibilityEffect(effect_id=effect_args["effect_id"],
+                           effect_name=effect_args["name"],
+                           entity=afflicted_entity,
+                           duration=effect_args["duration"],
+                           cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
 
 
 def apply_status_effects(gtg):

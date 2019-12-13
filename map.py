@@ -162,10 +162,12 @@ class Map:
 
     def npc_actions(self, gtg):
         for npc in self.npcs:
+            if gtg.player.has_moved and npc.hit_by_player:
+                npc.hit_by_player = False
             if npc.visible[gtg.player.pos_y][gtg.player.pos_x] and npc.is_alive() and gtg.player.is_alive():
                 if gtg.brezelheim.check_distance(npc.pos_y - gtg.player.pos_y, npc.pos_x - gtg.player.pos_x, 1.5):
                     npc.attack_player(gtg)
-                else:
+                elif not gtg.player.invisible:
                     npc.move(gtg.player, self)
 
     def door_actions(self, gtg, pressed_key):

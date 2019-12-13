@@ -35,3 +35,4 @@ SlowHealing=Slow Healing
 InstantHeal=Instant Heal
 SmallDamageBoost=Small Damage Buff
 Invincibility=Invincibility
+Invisibility=Invisibility

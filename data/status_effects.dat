@@ -20,6 +20,11 @@ SmallDamageBoost:
   cooldown: 2-4
 Invincibility:
   type: Invincibility
-  name: Unverwundbar
+  name: Unverwundbarkeit
   duration: 1
   cooldown: 100
+Invisibility:
+  type: Invisibility
+  name: Unsichtbarkeit
+  duration: 30
+  cooldown: 10

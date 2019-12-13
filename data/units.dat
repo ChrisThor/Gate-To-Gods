@@ -25,6 +25,8 @@ Drunkard:
   fieldOfVision: 3
   hostile: true
   name: Betrunkener
+  effects:
+    - Invisibility
 RagedDrunkard:
   healthPoints: 10
   damage: (1-3)
