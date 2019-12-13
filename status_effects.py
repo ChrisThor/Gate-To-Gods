@@ -1,12 +1,12 @@
 class StatusEffect:
-    def __init__(self, effect_id, effect_name, entity, duration: int, min_cooldown: int, max_cooldown):
+    def __init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick):
         entity.effects_on_entity.append(self)
         self.effect_name = effect_name
         self.enitiy = entity
         self.effect_id = effect_id
         self.duration = duration
-        self.min_cooldown = min_cooldown
-        self.max_cooldown = max_cooldown
+        self.min_tick = min_tick
+        self.max_tick = max_tick
         self.cooldown = 0
 
     def reduce_duration(self) -> bool:
@@ -28,7 +28,7 @@ class StatusEffect:
         return False
 
     def set_cooldown(self, gtg):
-        self.cooldown = gtg.rng.randint(self.min_cooldown, self.max_cooldown)
+        self.cooldown = gtg.rng.randint(self.min_tick, self.max_tick)
 
     def reverse(self):
         pass
@@ -40,8 +40,8 @@ def remove_effect_from_entity(entity, effect: StatusEffect):
 
 
 class HealingEffect(StatusEffect):
-    def __init__(self, effect_id, effect_name, entity, duration, min_cooldown, max_cooldown, min_hp_gain, max_hp_gain):
-        StatusEffect.__init__(self, effect_id, effect_name, entity, duration, min_cooldown, max_cooldown)
+    def __init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick, min_hp_gain, max_hp_gain):
+        StatusEffect.__init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick)
         self.min_hp_gain = min_hp_gain
         self.max_hp_gain = max_hp_gain
 
@@ -92,13 +92,13 @@ def set_healing_effect_values(effect_args: dict) -> dict:
         effect_args["max_hp_gain"] = effect_args["hp_gain"]
     del effect_args["hp_gain"]
 
-    if "-" in str(effect_args["cooldown"]):
-        effect_args["min_cooldown"] = int(effect_args["cooldown"].split("-")[0])
-        effect_args["max_cooldown"] = int(effect_args["cooldown"].split("-")[1])
+    if "-" in str(effect_args["tick"]):
+        effect_args["min_tick"] = int(effect_args["tick"].split("-")[0])
+        effect_args["max_tick"] = int(effect_args["tick"].split("-")[1])
     else:
-        effect_args["min_cooldown"] = effect_args["cooldown"]
-        effect_args["max_cooldown"] = effect_args["cooldown"]
-    del effect_args["cooldown"]
+        effect_args["min_tick"] = effect_args["tick"]
+        effect_args["max_tick"] = effect_args["tick"]
+    del effect_args["tick"]
 
     return effect_args
 
@@ -129,8 +129,8 @@ def create_effect(effect_args: dict, afflicted_entity):
                       effect_name=effect_args["name"],
                       entity=afflicted_entity,
                       duration=effect_args["duration"],
-                      min_cooldown=effect_args["min_cooldown"],
-                      max_cooldown=effect_args["max_cooldown"],
+                      min_tick=effect_args["min_tick"],
+                      max_tick=effect_args["max_tick"],
                       min_hp_gain=effect_args["min_hp_gain"],
                       max_hp_gain=effect_args["max_hp_gain"])
     elif effect_args["type"] == "DamageBoostEffect":
