@@ -12,6 +12,7 @@ Person:
   effects:
     - SlowHealing
     - SmallDamageBoost
+    - Invincibility
 PrairieDog:
   healthPoints: 20
   damage: (1-2)

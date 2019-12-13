@@ -60,7 +60,7 @@ class Entity:
             if not allowed_to_apply:
                 continue
             # print(effect)
-            status_effects.create_effect(gtg.all_status_effects[effect], entity)
+            status_effects.create_effect(gtg.all_status_effects[effect], entity, gtg)
             applied = True
         return applied
 

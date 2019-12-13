@@ -4,18 +4,22 @@ SlowHealing:
   duration: 40
   tick: 4-5
   hp_gain: 1-2
+  cooldown: 5
 InstantHeal:
   type: HealingEffect
   name: Sofortheilung
   duration: 1
   tick: 0
   hp_gain: 1000000
+  cooldown: 50
 SmallDamageBoost:
   type: DamageBoostEffect
   name: Leicht erhöhter Schaden
   duration: 3
   damage_boost: 2
+  cooldown: 2-4
 Invincibility:
   type: Invincibility
   name: Unverwundbar
-  duration: 2
+  duration: 1
+  cooldown: 100
