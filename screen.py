@@ -110,7 +110,7 @@ class Screen:
     def get_ground_information(self, gtg):
         dead_npcs = []
         for npc in gtg.current_level.npcs:
-            if npc.confirm_pos(gtg.player.pos_y, gtg.player.pos_x) and not npc.alive:
+            if not npc.invisible and npc.confirm_pos(gtg.player.pos_y, gtg.player.pos_x) and not npc.alive:
                 dead_npcs.append(npc)
         if len(dead_npcs) == 0:
             return "".ljust(self.len_x) + "\n"
