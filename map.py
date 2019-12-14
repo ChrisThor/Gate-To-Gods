@@ -129,7 +129,8 @@ class Map:
                     self.discovered[pos_y][pos_x] = True
 
                     for npc in self.npcs:
-                        if npc.is_alive() and self.visible_to_player[npc.pos_y][npc.pos_x] and \
+                        if npc.is_alive() and not npc.invisible and \
+                                self.visible_to_player[npc.pos_y][npc.pos_x] and \
                                 brezel.check_distance(npc.pos_y - pos_y, npc.pos_x - pos_x, npc.range) and \
                                 npc.visible[pos_y][pos_x]:
                             self.colours[pos_y][pos_x] = colours.get_colour("yellow")
