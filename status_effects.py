@@ -60,7 +60,7 @@ class HealingEffect(StatusEffect):
 
     def apply(self, gtg, entity):
         if self.do_tick(gtg):
-            entity.add_hp(gtg.rng.randint(self.min_hp_gain, self.max_hp_gain))
+            entity.add_hp(gtg, gtg.rng.randint(self.min_hp_gain, self.max_hp_gain))
 
 
 class DamageBoostEffect(StatusEffect):
@@ -110,9 +110,9 @@ class InvisibilityEffect(StatusEffect):
 
 
 def set_values(effect_args: dict, attribute_name: str, new_attribute: str) -> dict:
-    if "-" in str(effect_args[attribute_name]):
-        effect_args[f"min_{new_attribute}"] = int(effect_args[attribute_name].split("-")[0])
-        effect_args[f"max_{new_attribute}"] = int(effect_args[attribute_name].split("-")[1])
+    if "/" in str(effect_args[attribute_name]):
+        effect_args[f"min_{new_attribute}"] = int(effect_args[attribute_name].split("/")[0])
+        effect_args[f"max_{new_attribute}"] = int(effect_args[attribute_name].split("/")[1])
     else:
         effect_args[f"min_{new_attribute}"] = effect_args[attribute_name]
         effect_args[f"max_{new_attribute}"] = effect_args[attribute_name]
@@ -124,13 +124,10 @@ def set_effect_values(effects: dict) -> dict:
     for effect_id in effects:
         if effects[effect_id]["type"] == "HealingEffect":
             effects[effect_id] = set_values(effects[effect_id], "hp_gain", "hp_gain")
-            effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
             effects[effect_id] = set_values(effects[effect_id], "tick", "tick")
         elif effects[effect_id]["type"] == "DamageBoostEffect":
             effects[effect_id] = set_values(effects[effect_id], "damage_boost", "boost")
-            effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
-        elif effects[effect_id]["type"] == "Invincibility" or effects[effect_id]["type"] == "Invisibility":
-            effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
+        effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
     return effects
 
 

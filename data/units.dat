@@ -15,7 +15,7 @@ Person:
     - Invincibility
 PrairieDog:
   healthPoints: 20
-  damage: (1-2)
+  damage: (1/2)
   fieldOfVision: 4
   hostile: true
   name: Präriehund
@@ -27,9 +27,10 @@ Drunkard:
   name: Betrunkener
   effects:
     - Invisibility
+    - Poison
 RagedDrunkard:
   healthPoints: 10
-  damage: (1-3)
+  damage: (1/3)
   fieldOfVision: 2
   hostile: true
   name: Wilder Betrunkener

@@ -70,9 +70,9 @@ class GateToGods:
                             valid_units_file = False
                     elif "damage" in lines[line]:
                         try:
-                            if "-" in lines[line]:
-                                minimum_damage = int(lines[line].split("(")[1].split("-")[0])
-                                maximum_damage = int(lines[line].split("-")[1].split(")")[0])
+                            if "/" in lines[line]:
+                                minimum_damage = int(lines[line].split("(")[1].split("/")[0])
+                                maximum_damage = int(lines[line].split("/")[1].split(")")[0])
                             else:
                                 minimum_damage = int(lines[line].split("(")[1].split(")")[0])
                                 maximum_damage = minimum_damage
@@ -111,7 +111,7 @@ class GateToGods:
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
                     print(self.language.texts.get("unitsdat_incomplete_definition", self.language.undefined)
-                          .replace("(ENTITY_ID)"), entity_id)
+                          .replace("(ENTITY_ID)", entity_id))
                     exit(-1)
                 else:
                     self.default_entities.append(DefaultEntity(entity_id, name, range_of_vision, hp, minimum_damage,

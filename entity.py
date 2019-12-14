@@ -26,10 +26,12 @@ class Entity:
             self.hp = 0
             self.kill(gtg)
 
-    def add_hp(self, added_hp: int):
+    def add_hp(self, gtg, added_hp: int):
         self.hp += added_hp
         if self.hp > self.max_hp:
             self.hp = self.max_hp
+        elif self.hp == 0:
+            self.kill(gtg)
 
     def kill(self, gtg):
         self.alive = False
