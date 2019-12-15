@@ -9,6 +9,8 @@ class NonPlayerCharacter(Entity):
         self.aggressive = aggressive
         self.hit_by_player = False
         self.visible = []
+        self.drugged_pos_y = -1
+        self.drugged_pos_x = -1
 
     def kill(self, gtg):
         self.alive = False

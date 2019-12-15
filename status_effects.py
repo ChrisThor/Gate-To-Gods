@@ -141,6 +141,9 @@ class DruggedEffect(StatusEffect):
                     door.drugged_symbol = "+"
                 else:
                     door.drugged_symbol = "'"
+            for npc in gtg.current_level.npcs:
+                npc.drugged_pos_y = npc.pos_y + gtg.rng.randint(-1, 1)
+                npc.drugged_pos_x = npc.pos_x + gtg.rng.randint(-1, 1)
 
     def reverse(self):
         self.entity.drugged = False

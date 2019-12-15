@@ -99,16 +99,29 @@ class Screen:
     def find_npc(self, gtg, pos_x, pos_y, npc_alive):
         for npc in self.npcs:
             if not npc.invisible:
-                if pos_y == npc.pos_y and pos_x == npc.pos_x and gtg.current_level.visible_to_player[pos_y][pos_x]:
-                    if npc_alive and npc.alive:
-                        self.content += npc.symbol
-                        self.npcs.remove(npc)
-                    elif not npc_alive and not npc.alive:
-                        self.content += "%"
-                        self.npcs.remove(npc)
-                    else:
-                        continue
-                    return True
+                if not gtg.player.drugged:
+                    if pos_y == npc.pos_y and pos_x == npc.pos_x and gtg.current_level.visible_to_player[pos_y][pos_x]:
+                        if npc_alive and npc.alive:
+                            self.content += npc.symbol
+                            self.npcs.remove(npc)
+                        elif not npc_alive and not npc.alive:
+                            self.content += "%"
+                            self.npcs.remove(npc)
+                        else:
+                            continue
+                        return True
+                else:
+                    if pos_y == npc.drugged_pos_y and pos_x == npc.drugged_pos_x and \
+                            gtg.current_level.visible_to_player[pos_y][pos_x]:
+                        if npc_alive and npc.alive:
+                            self.content += npc.symbol
+                            self.npcs.remove(npc)
+                        elif not npc_alive and not npc.alive:
+                            self.content += "%"
+                            self.npcs.remove(npc)
+                        else:
+                            continue
+                        return True
         return False
 
     def get_ground_information(self, gtg):
