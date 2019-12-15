@@ -67,13 +67,16 @@ class Box:
             self.print_box(gtg.scr)
             pressed_key = readchar.readkey()
             if pressed_key == "Up":
-                if self.active_option != 0:
-                    self.active_option -= 1
-            elif pressed_key == "Down":
-                if self.active_option < len(self.options) - 1:
-                    self.active_option += 1
+                self.active_option -= 1
+            elif pressed_key == "Down" or pressed_key == "Tab":
+                self.active_option += 1
             elif self.abortable and pressed_key == "Escape":
                 return ""
+            if self.active_option == len(self.options):
+                self.active_option = 0
+            elif self.active_option < 0:
+                self.active_option = len(self.options) - 1
+
         return self.options[self.active_option].text
 
     def deactivate_options(self):
