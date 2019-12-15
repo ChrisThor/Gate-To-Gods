@@ -6,6 +6,7 @@ class Player(Entity):
     def __init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy):
         super().__init__(entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy)
         self.has_moved = False
+        self.drugged = False
 
     def print_hp(self, colours, scr):
         if self.hp < 20:

@@ -143,7 +143,7 @@ class GateToGods:
 
     def prepare_new_map(self):
         self.brezelheim.reset_brezelheim(self.current_level)
-        self.current_level.build_map_colour(self.brezelheim, self.player, self.colours)
+        self.current_level.build_map_colour(self)
 
     def play(self):
         playing = True
@@ -177,7 +177,7 @@ class GateToGods:
                     status_effects.apply_status_effects(self)
                 else:
                     skip_npc_turn = False
-                self.current_level.build_map_colour(self.brezelheim, self.player, self.colours)
+                self.current_level.build_map_colour(self)
                 if not self.player.is_alive():
                     self.scr.print(record, self)
                     playing = False

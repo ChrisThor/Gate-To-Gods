@@ -101,18 +101,18 @@ class Map:
     def set_visible_to_npc(self, brezel):
         self.visible_to_npc = brezel.brezelheimable
 
-    def build_map_colour(self, brezel, player, colours):
-        brezel.reset_brezelheim(self)
-        self.reset_colours(colours)
+    def build_map_colour(self, gtg):
+        gtg.brezelheim.reset_brezelheim(self)
+        self.reset_colours(gtg.colours)
 
-        player.calculate_fov(brezel, self)
-        self.set_visible_to_player(brezel)
-        brezel.reset_brezelheim(self)
+        gtg.player.calculate_fov(gtg.brezelheim, self)
+        self.set_visible_to_player(gtg.brezelheim)
+        gtg.brezelheim.reset_brezelheim(self)
 
-        self.calculate_npcs_fov(brezel)
+        self.calculate_npcs_fov(gtg.brezelheim)
         # self.set_visible_to_npc(brezel)
 
-        self.colour_level(colours, brezel)
+        self.colour_level(gtg)
 
     def calculate_npcs_fov(self, brezelheim):
         for npc in self.npcs:
@@ -121,19 +121,24 @@ class Map:
                 npc.calculate_fov(brezelheim, self)
                 npc.visible = brezelheim.brezelheimable
 
-    def colour_level(self, colours, brezel):
+    def colour_level(self, gtg):
         for pos_y in range(self.len_y):
             for pos_x in range(self.len_x):
                 if self.visible_to_player[pos_y][pos_x]:
-                    self.colours[pos_y][pos_x] = colours.get_colour("white")
-                    self.discovered[pos_y][pos_x] = True
+                    if not gtg.player.drugged:
+                        self.colours[pos_y][pos_x] = gtg.colours.get_colour("white")
+                        self.discovered[pos_y][pos_x] = True
 
-                    for npc in self.npcs:
-                        if npc.is_alive() and not npc.invisible and \
-                                self.visible_to_player[npc.pos_y][npc.pos_x] and \
-                                brezel.check_distance(npc.pos_y - pos_y, npc.pos_x - pos_x, npc.range) and \
-                                npc.visible[pos_y][pos_x]:
-                            self.colours[pos_y][pos_x] = colours.get_colour("yellow")
+                        for npc in self.npcs:
+                            if npc.is_alive() and not npc.invisible and \
+                                    self.visible_to_player[npc.pos_y][npc.pos_x] and \
+                                    gtg.brezelheim.check_distance(npc.pos_y - pos_y, npc.pos_x - pos_x, npc.range) and \
+                                    npc.visible[pos_y][pos_x]:
+                                self.colours[pos_y][pos_x] = gtg.colours.get_colour("yellow")
+                    else:
+                        self.colours[pos_y][pos_x] = gtg.colours.get_random_colour(gtg.rng, True)
+                        self.discovered[pos_y][pos_x] = True
+
 
     def is_walkable(self, pos_y, pos_x):
         if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
