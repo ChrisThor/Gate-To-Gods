@@ -1,3 +1,6 @@
+import calculate_chance
+
+
 class StatusEffect:
     def __init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick, cooldown):
         entity.effects_on_entity.append(self)
@@ -126,13 +129,18 @@ class HitAccuracyEffect(StatusEffect):
 
 
 class DruggedEffect(StatusEffect):
-    def __init__(self, effect_id, effect_name, entity, duration, cooldown):
-        super().__init__(effect_id, effect_name, entity, duration, 0, 0, cooldown)
+    def __init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick, cooldown):
+        super().__init__(effect_id, effect_name, entity, duration, min_tick, max_tick, cooldown)
 
     def apply(self, gtg):
         if self.do_tick(gtg):
             if not self.entity.drugged:
                 self.entity.drugged = True
+            for door in gtg.current_level.doors:
+                if calculate_chance.calculate_chance(gtg.rng, 0.5):
+                    door.drugged_symbol = "+"
+                else:
+                    door.drugged_symbol = "'"
 
     def reverse(self):
         self.entity.drugged = False
@@ -205,6 +213,8 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
                       effect_name=effect_args["name"],
                       entity=afflicted_entity,
                       duration=effect_args["duration"],
+                      min_tick=effect_args["min_tick"],
+                      max_tick=effect_args["max_tick"],
                       cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
 
 

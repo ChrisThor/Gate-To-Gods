@@ -1,4 +1,5 @@
 import status_effects
+import calculate_chance
 
 
 class Screen:
@@ -42,7 +43,7 @@ class Screen:
                                     continue
                                 if self.find_npc(gtg, pos_x, pos_y, False):
                                     continue
-                                if self.find_door(pos_x, pos_y):
+                                if self.find_door(pos_x, pos_y, gtg):
                                     continue
                                 if self.find_entrance(pos_y, pos_x):
                                     continue
@@ -81,14 +82,17 @@ class Screen:
                 return True
         return False
 
-    def find_door(self, pos_x, pos_y):
+    def find_door(self, pos_x, pos_y, gtg):
         for door in self.doors:
             if pos_y == door.pos_y and pos_x == door.pos_x:
-                if door.state == "closed":
-                    self.content += "+"
+                if gtg.player.drugged:
+                    self.content += door.drugged_symbol
                 else:
-                    self.content += "'"
-                self.doors.remove(door)
+                    if door.state == "closed":
+                        self.content += "+"
+                    else:
+                        self.content += "'"
+                    self.doors.remove(door)
                 return True
         return False
 

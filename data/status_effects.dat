@@ -45,4 +45,5 @@ Drugged:
   type: Drugged
   name: Unter Drogen
   duration: 200
+  tick: 2
   cooldown: 1010

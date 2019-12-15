@@ -3,6 +3,7 @@ class Door:
         self.pos_y = pos_y
         self.pos_x = pos_x
         self.state = state
+        self.drugged_symbol = "+"
 
     def interact_with_door(self, gtg, pressed_key):
         if pressed_key == gtg.keys.open_door and self.state == "closed":
