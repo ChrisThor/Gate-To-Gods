@@ -66,7 +66,7 @@ class NonPlayerCharacter(Entity):
                     gtg.player.reduce_hp(gtg, damage)
                     self.apply_status_effect_on_entity(gtg.player, gtg)
                 else:
-                    pass    # TODO: Entity missed player
+                    gtg.msg_box.npc_missed_player(gtg, self)
             else:
                 pass    # TODO: Player is invincible message
 

@@ -53,6 +53,6 @@ class Player(Entity):
                         npc.hit_by_player = True
                         self.apply_status_effect_on_entity(npc, gtg)
                     else:
-                        pass    # TODO: Player missed entity
+                        gtg.msg_box.player_missed_npc(gtg, npc)
                 else:
                     pass    # TODO: NPC is invincible message

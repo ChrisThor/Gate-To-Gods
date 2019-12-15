@@ -89,3 +89,17 @@ class Messagebox:
     def open_door(self, gtg):
         self.new_message = Message(gtg.language.texts.get("open_door_message", gtg.language.undefined))
         self.update_messagebox()
+
+    def player_missed_npc(self, gtg, npc):
+        message = gtg.language.texts.get("player_missed_hit", gtg.language.undefined)\
+            .replace("(NPC_NAME)",
+                     f"{gtg.colours.get_colour('yellow')}{npc.name}{gtg.colours.get_colour('white')}")
+        self.new_message = Message(message, len(f"{gtg.colours.get_colour('yellow')}{gtg.colours.get_colour('white')}"))
+        self.update_messagebox()
+
+    def npc_missed_player(self, gtg, npc):
+        message = gtg.language.texts.get("npc_missed_hit", gtg.language.undefined)\
+            .replace("(NPC_NAME)",
+                     f"{gtg.colours.get_colour('yellow')}{npc.name}{gtg.colours.get_colour('white')}")
+        self.new_message = Message(message, len(f"{gtg.colours.get_colour('yellow')}{gtg.colours.get_colour('white')}"))
+        self.update_messagebox()
