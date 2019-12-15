@@ -41,3 +41,8 @@ Invisibility:
   duration: 90
   cooldown: 20
   accuracy: 0.75
+Drugged:
+  type: Drugged
+  name: Unter Drogen
+  duration: 200
+  cooldown: 1010

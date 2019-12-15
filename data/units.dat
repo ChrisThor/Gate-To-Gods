@@ -32,6 +32,7 @@ Drunkard:
   effects:
     - Invisibility
     - Poison
+    - Drugged
 RagedDrunkard:
   healthPoints: 10
   damage: (1/3)

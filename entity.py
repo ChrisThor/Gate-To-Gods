@@ -19,6 +19,7 @@ class Entity:
         self.afflicting_on_hit = effects
         self.invincible = False
         self.invisible = False
+        self.drugged = False
         self.accuracy = accuracy
 
     def reduce_hp(self, gtg, difference):

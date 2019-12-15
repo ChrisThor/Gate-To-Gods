@@ -125,6 +125,19 @@ class HitAccuracyEffect(StatusEffect):
         self.entity.accuracy = self.original_accuracy
 
 
+class DruggedEffect(StatusEffect):
+    def __init__(self, effect_id, effect_name, entity, duration, cooldown):
+        super().__init__(effect_id, effect_name, entity, duration, 0, 0, cooldown)
+
+    def apply(self, gtg):
+        if self.do_tick(gtg):
+            if not self.entity.drugged:
+                self.entity.drugged = True
+
+    def reverse(self):
+        self.entity.drugged = False
+
+
 def set_values(effect_args: dict, attribute_name: str, new_attribute: str) -> dict:
     if "/" in str(effect_args[attribute_name]):
         effect_args[f"min_{new_attribute}"] = int(effect_args[attribute_name].split("/")[0])
@@ -178,7 +191,6 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
                            entity=afflicted_entity,
                            duration=effect_args["duration"],
                            cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
-
     elif effect_args["type"] == "Accuracy":
         HitAccuracyEffect(effect_id=effect_args["effect_id"],
                           effect_name=effect_args["name"],
@@ -188,6 +200,12 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
                           max_tick=effect_args["max_tick"],
                           accuracy=float(effect_args["accuracy"]),
                           cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
+    elif effect_args["type"] == "Drugged":
+        DruggedEffect(effect_id=effect_args["effect_id"],
+                      effect_name=effect_args["name"],
+                      entity=afflicted_entity,
+                      duration=effect_args["duration"],
+                      cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
 
 
 def apply_status_effects(gtg):
