@@ -35,3 +35,9 @@ Invisibility:
   name: Unsichtbarkeit
   duration: 30
   cooldown: 10
+75Accuracy:
+  type: Accuracy
+  name: 75% Schlaggenauigkeit
+  duration: 90
+  cooldown: 20
+  accuracy: 0.75

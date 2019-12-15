@@ -20,6 +20,8 @@ PrairieDog:
   fieldOfVision: 4
   hostile: true
   name: Präriehund
+  effects:
+    - 75Accuracy
 Drunkard:
   healthPoints: 10
   damage: (1)

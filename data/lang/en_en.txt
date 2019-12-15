@@ -38,3 +38,4 @@ InstantHeal=Instant Heal
 SmallDamageBoost=Small Damage Buff
 Invincibility=Invincibility
 Invisibility=Invisibility
+75Accuracy=75% Hit Accuracy

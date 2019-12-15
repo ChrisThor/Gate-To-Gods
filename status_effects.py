@@ -109,6 +109,22 @@ class InvisibilityEffect(StatusEffect):
         self.enitiy.invisible = False
 
 
+class HitAccuracyEffect(StatusEffect):
+    def __init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick, accuracy,
+                 cooldown):
+        super().__init__(effect_id, effect_name, entity, duration, min_tick, max_tick, cooldown)
+        self.original_accuracy = entity.accuracy
+        self.accuracy = accuracy
+
+    def apply(self, gtg, entity):
+        if self.do_tick(gtg):
+            if entity.accuracy != self.accuracy:
+                entity.accuracy = self.accuracy
+
+    def reverse(self):
+        self.enitiy.accuracy = self.original_accuracy
+
+
 def set_values(effect_args: dict, attribute_name: str, new_attribute: str) -> dict:
     if "/" in str(effect_args[attribute_name]):
         effect_args[f"min_{new_attribute}"] = int(effect_args[attribute_name].split("/")[0])
@@ -124,9 +140,9 @@ def set_effect_values(effects: dict) -> dict:
     for effect_id in effects:
         if effects[effect_id]["type"] == "HealingEffect":
             effects[effect_id] = set_values(effects[effect_id], "hp_gain", "hp_gain")
-            effects[effect_id] = set_values(effects[effect_id], "tick", "tick")
         elif effects[effect_id]["type"] == "DamageBoostEffect":
             effects[effect_id] = set_values(effects[effect_id], "damage_boost", "boost")
+        effects[effect_id] = set_values(effects[effect_id], "tick", "tick")
         effects[effect_id] = set_values(effects[effect_id], "cooldown", "cooldown")
     return effects
 
@@ -162,6 +178,16 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
                            entity=afflicted_entity,
                            duration=effect_args["duration"],
                            cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
+
+    elif effect_args["type"] == "Accuracy":
+        HitAccuracyEffect(effect_id=effect_args["effect_id"],
+                          effect_name=effect_args["name"],
+                          entity=afflicted_entity,
+                          duration=effect_args["duration"],
+                          min_tick=effect_args["min_tick"],
+                          max_tick=effect_args["max_tick"],
+                          accuracy=float(effect_args["accuracy"]),
+                          cooldown=gtg.rng.randint(effect_args["min_cooldown"], effect_args["max_cooldown"]))
 
 
 def apply_status_effects(gtg):
@@ -213,6 +239,8 @@ def read_status_effects_dat(gtg):
 
             effect_properties[split_line[0].replace(" ", "")] = effect_property
             line += 1
+        if "tick" not in effect_properties:
+            effect_properties["tick"] = 0
         effect_templates[effect_properties["effect_id"]] = effect_properties
     return effect_templates
 
