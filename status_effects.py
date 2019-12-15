@@ -2,7 +2,7 @@ class StatusEffect:
     def __init__(self, effect_id, effect_name, entity, duration, min_tick, max_tick, cooldown):
         entity.effects_on_entity.append(self)
         self.effect_name = effect_name
-        self.enitiy = entity
+        self.entity = entity
         self.effect_id = effect_id
         self.duration = duration
         self.min_tick = min_tick
@@ -58,9 +58,9 @@ class HealingEffect(StatusEffect):
         self.min_hp_gain = min_hp_gain
         self.max_hp_gain = max_hp_gain
 
-    def apply(self, gtg, entity):
+    def apply(self, gtg):
         if self.do_tick(gtg):
-            entity.add_hp(gtg, gtg.rng.randint(self.min_hp_gain, self.max_hp_gain))
+            self.entity.add_hp(gtg, gtg.rng.randint(self.min_hp_gain, self.max_hp_gain))
 
 
 class DamageBoostEffect(StatusEffect):
@@ -71,42 +71,42 @@ class DamageBoostEffect(StatusEffect):
         self.original_min_damage = entity.minimum_damage
         self.original_max_damage = entity.maximum_damage
 
-    def apply(self, gtg, entity):
+    def apply(self, gtg):
         if self.do_tick(gtg):
-            if self.enitiy.minimum_damage != self.min_boost + self.original_min_damage and \
-                    self.enitiy.maximum_damage != self.max_boost + self.original_max_damage:
-                self.enitiy.minimum_damage = self.original_min_damage + self.min_boost
-                self.enitiy.maximum_damage = self.original_max_damage + self.max_boost
+            if self.entity.minimum_damage != self.min_boost + self.original_min_damage and \
+                    self.entity.maximum_damage != self.max_boost + self.original_max_damage:
+                self.entity.minimum_damage = self.original_min_damage + self.min_boost
+                self.entity.maximum_damage = self.original_max_damage + self.max_boost
 
     def reverse(self):
-        self.enitiy.minimum_damage = self.original_min_damage
-        self.enitiy.maximum_damage = self.original_max_damage
+        self.entity.minimum_damage = self.original_min_damage
+        self.entity.maximum_damage = self.original_max_damage
 
 
 class InvincibilityEffect(StatusEffect):
     def __init__(self, effect_id, effect_name, entity, duration, cooldown):
         super().__init__(effect_id, effect_name, entity, duration, 0, 0, cooldown)
 
-    def apply(self, gtg, entity):
+    def apply(self, gtg):
         if self.do_tick(gtg):
-            if not self.enitiy.invincible:
-                self.enitiy.invincible = True
+            if not self.entity.invincible:
+                self.entity.invincible = True
 
     def reverse(self):
-        self.enitiy.invincible = False
+        self.entity.invincible = False
 
 
 class InvisibilityEffect(StatusEffect):
     def __init__(self, effect_id, effect_name, entity, duration, cooldown):
         super().__init__(effect_id, effect_name, entity, duration, 0, 0, cooldown)
 
-    def apply(self, gtg, entity):
+    def apply(self, gtg):
         if self.do_tick(gtg):
-            if not self.enitiy.invisible:
-                self.enitiy.invisible = True
+            if not self.entity.invisible:
+                self.entity.invisible = True
 
     def reverse(self):
-        self.enitiy.invisible = False
+        self.entity.invisible = False
 
 
 class HitAccuracyEffect(StatusEffect):
@@ -116,13 +116,13 @@ class HitAccuracyEffect(StatusEffect):
         self.original_accuracy = entity.accuracy
         self.accuracy = accuracy
 
-    def apply(self, gtg, entity):
+    def apply(self, gtg):
         if self.do_tick(gtg):
-            if entity.accuracy != self.accuracy:
-                entity.accuracy = self.accuracy
+            if self.entity.accuracy != self.accuracy:
+                self.entity.accuracy = self.accuracy
 
     def reverse(self):
-        self.enitiy.accuracy = self.original_accuracy
+        self.entity.accuracy = self.original_accuracy
 
 
 def set_values(effect_args: dict, attribute_name: str, new_attribute: str) -> dict:
@@ -193,10 +193,10 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
 def apply_status_effects(gtg):
     for effect in gtg.player.effects_on_entity:
         if gtg.player.alive:
-            effect.apply(gtg, gtg.player)
+            effect.apply(gtg)
     for npc in gtg.current_level.npcs:
         for effect in npc.effects_on_entity:
-            effect.apply(gtg, npc)
+            effect.apply(gtg)
 
 
 def remove_status_effects(gtg):
