@@ -166,7 +166,8 @@ def create_effect(effect_args: dict, afflicted_entity, gtg):
 
 def apply_status_effects(gtg):
     for effect in gtg.player.effects_on_entity:
-        effect.apply(gtg, gtg.player)
+        if gtg.player.alive:
+            effect.apply(gtg, gtg.player)
     for npc in gtg.current_level.npcs:
         for effect in npc.effects_on_entity:
             effect.apply(gtg, npc)
