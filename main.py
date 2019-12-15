@@ -59,6 +59,7 @@ class GateToGods:
                 range_of_vision = -1
                 aggression = False
                 effects = {}
+                accuracy = 1.0
                 line += 1
                 while line < len(lines) and lines[line][0] == " ":
                     if "healthPoints" in lines[line]:
@@ -108,6 +109,13 @@ class GateToGods:
                             effects[effect] = {"effect_id": effect}
                             line += 1
                         line -= 1
+                    elif "accuracy" in lines[line]:
+                        try:
+                            accuracy = float(lines[line].split(":")[1])
+                        except ValueError:
+                            print(self.language.texts.get("unitsdat_number_error", self.language.undefined)
+                                  .replace("(LINE)", str(line)).replace("(NOT_A_NUMBER)", lines[line].split(":")[1]))
+                            valid_units_file = False
                     line += 1
                 if name == "" or hp == -1 or minimum_damage == -1 == maximum_damage or range_of_vision == -1:
                     print(self.language.texts.get("unitsdat_incomplete_definition", self.language.undefined)
@@ -115,7 +123,7 @@ class GateToGods:
                     exit(-1)
                 else:
                     self.default_entities.append(DefaultEntity(entity_id, name, range_of_vision, hp, minimum_damage,
-                                                               maximum_damage, aggression, effects))
+                                                               maximum_damage, aggression, effects, accuracy))
                     if line >= len(lines):
                         break
             if not player_defined:

@@ -1,9 +1,10 @@
 from entity import Entity
+import calculate_chance
 
 
 class NonPlayerCharacter(Entity):
-    def __init__(self, entity_id, pos_y, pos_x, symbol, aggressive, name, range_of_vision, hp, minimum_damage, maximum_damage, effects):
-        Entity.__init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects)
+    def __init__(self, entity_id, pos_y, pos_x, symbol, aggressive, name, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy):
+        Entity.__init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy)
         self.name = name
         self.aggressive = aggressive
         self.hit_by_player = False
@@ -57,12 +58,15 @@ class NonPlayerCharacter(Entity):
     def attack_player(self, gtg):
         if (not gtg.player.invisible and self.aggressive) or (gtg.player.invisible and self.hit_by_player):
             if not gtg.player.invincible:
-                damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
-                if damage > gtg.player.hp:
-                    damage = gtg.player.hp
-                gtg.msg_box.attack_player_m(gtg, self, damage)
-                gtg.player.reduce_hp(gtg, damage)
-                self.apply_status_effect_on_entity(gtg.player, gtg)
+                if calculate_chance.calculate_chance(gtg.rng, self.accuracy):
+                    damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
+                    if damage > gtg.player.hp:
+                        damage = gtg.player.hp
+                    gtg.msg_box.attack_player_m(gtg, self, damage)
+                    gtg.player.reduce_hp(gtg, damage)
+                    self.apply_status_effect_on_entity(gtg.player, gtg)
+                else:
+                    pass    # TODO: Entity missed player
             else:
                 pass    # TODO: Player is invincible message
 

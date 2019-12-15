@@ -11,7 +11,8 @@ class DefaultEntity:
                  minimum_damage: int,
                  maximum_damage: int,
                  aggressive: bool,
-                 status_effects: dict):
+                 status_effects: dict,
+                 accuracy: float):
         self.entity_id = entity_id
         self.name = name
         self.range_of_vision = range_of_vision
@@ -20,14 +21,17 @@ class DefaultEntity:
         self.maximum_damage = maximum_damage
         self.aggressive = aggressive
         self.afflicting_effects_on_hit = status_effects
+        self.accuracy = accuracy
 
     def create(self, pos_y, pos_x):
         if self.entity_id == "Player":
-            return Player(self.entity_id, pos_y, pos_x, "@", self.range_of_vision, self.hp, self.minimum_damage, self.maximum_damage, self.afflicting_effects_on_hit)
+            return Player(self.entity_id, pos_y, pos_x, "@", self.range_of_vision, self.hp, self.minimum_damage,
+                          self.maximum_damage, self.afflicting_effects_on_hit, self.accuracy)
         symbol = ""
         if self.aggressive:
             symbol = "E"
         else:
             symbol = "p"
-        return NonPlayerCharacter(self.entity_id, pos_y, pos_x, symbol, self.aggressive, self.name, self.range_of_vision, self.hp, self.minimum_damage,
-                                  self.maximum_damage, self.afflicting_effects_on_hit)
+        return NonPlayerCharacter(self.entity_id, pos_y, pos_x, symbol, self.aggressive, self.name,
+                                  self.range_of_vision, self.hp, self.minimum_damage, self.maximum_damage,
+                                  self.afflicting_effects_on_hit, self.accuracy)

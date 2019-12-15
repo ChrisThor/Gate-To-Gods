@@ -1,9 +1,10 @@
 from entity import Entity
+import calculate_chance
 
 
 class Player(Entity):
-    def __init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects):
-        super().__init__(entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects)
+    def __init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy):
+        super().__init__(entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy)
         self.has_moved = False
 
     def print_hp(self, colours, scr):
@@ -45,10 +46,13 @@ class Player(Entity):
         for npc in gtg.current_level.npcs:
             if npc.pos_y == pos_y and npc.pos_x == pos_x and npc.is_alive():
                 if not npc.invincible:
-                    damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
-                    gtg.msg_box.attack_npc(gtg, damage, npc)
-                    npc.reduce_hp(gtg, damage)
-                    npc.hit_by_player = True
-                    self.apply_status_effect_on_entity(npc, gtg)
+                    if calculate_chance.calculate_chance(gtg.rng, self.accuracy):
+                        damage = gtg.rng.randint(self.minimum_damage, self.maximum_damage)
+                        gtg.msg_box.attack_npc(gtg, damage, npc)
+                        npc.reduce_hp(gtg, damage)
+                        npc.hit_by_player = True
+                        self.apply_status_effect_on_entity(npc, gtg)
+                    else:
+                        pass    # TODO: Player missed entity
                 else:
                     pass    # TODO: NPC is invincible message

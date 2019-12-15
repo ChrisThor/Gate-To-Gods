@@ -2,7 +2,7 @@ import status_effects
 
 
 class Entity:
-    def __init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects):
+    def __init__(self, entity_id, pos_y, pos_x, symbol, range_of_vision, hp, minimum_damage, maximum_damage, effects, accuracy):
         self.entity_id = entity_id
         self.pos_y = pos_y
         self.pos_x = pos_x
@@ -19,6 +19,7 @@ class Entity:
         self.afflicting_on_hit = effects
         self.invincible = False
         self.invisible = False
+        self.accuracy = accuracy
 
     def reduce_hp(self, gtg, difference):
         self.hp -= difference

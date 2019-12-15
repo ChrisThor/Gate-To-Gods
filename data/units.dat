@@ -3,6 +3,7 @@ Player:
   damage: (5)
   fieldOfVision: 5
   name: Spieler
+  accuracy: 0.95
 Person:
   healthPoints: 40
   damage: (10)
@@ -25,6 +26,7 @@ Drunkard:
   fieldOfVision: 3
   hostile: true
   name: Betrunkener
+  accuracy: 0.5
   effects:
     - Invisibility
     - Poison
@@ -34,3 +36,4 @@ RagedDrunkard:
   fieldOfVision: 2
   hostile: true
   name: Wilder Betrunkener
+  accuracy: 0.4
