@@ -11,7 +11,6 @@ class Map:
         self.level_objects = []
         self.discovered = []
         self.visible_to_player = []
-        self.visible_to_npc = []
         self.colours = []
         self.doors = []
         self.npcs = []
@@ -20,6 +19,11 @@ class Map:
         self.init_tile_visibility()
 
     def init_tile_visibility(self):
+        """
+        Creates a 2D-List corresponding to the size of the loaded level with "False" values.
+        Only tiles with "True" are visible (discovered)
+        :return: Nothing
+        """
         for pos_y in range(self.len_y):
             discovered_x = []
             for pos_x in range(self.len_x):
@@ -27,6 +31,11 @@ class Map:
             self.discovered.append(discovered_x)
 
     def reset_colours(self, colours):
+        """
+        Creates a new 2D-List containing the default colour "grey" of the level.
+        :param colours:     The colours object of the game.
+        :return:            Nothing
+        """
         self.colours = []
         for pos_y in range(self.len_y):
             colours_x = []
@@ -35,6 +44,12 @@ class Map:
             self.colours.append(colours_x)
 
     def open_map(self, file, gtg):
+        """
+        This method loads a level from a file.
+        :param file:    The file which contains the level.
+        :param gtg:     The game object
+        :return:
+        """
         level_file = ""
         try:
             level_file = open(file, "r")
@@ -79,29 +94,51 @@ class Map:
                 elif "Exit" in line:
                     self.init_entrance(line, pos_x, pos_y, "<")
         if not player_defined and gtg.player.pos_x == -1 and gtg.player.pos_y == -1:
-            print(gtg.language.gtg.language.textx.get("level_player_not_defined", gtg.language.undefined))
+            print(gtg.language.texts.get("level_player_not_defined", gtg.language.undefined))
             exit(-1)
         level_file.close()
 
     def init_entrance(self, line, pos_x, pos_y, symbol):
+        """
+        Creates an entrance and saves the linked map in that entrance
+        :param line:    the line inside the level file which contains the information for this entrance
+        :param pos_x:   x-coordinate of the entrance
+        :param pos_y:   y-coordinate of the entrance
+        :param symbol:  the symbol which is shown at the position
+        :return:        Nothing
+        """
         map_name = line.split(":")[3]
         if "\n" in map_name:
             map_name = map_name[:-1]
         self.entrances_and_exits.append(Entrance(pos_y, pos_x, map_name, symbol))
 
     def find_entrance(self, gtg):
+        """
+        This method is used to find an entrance when the player has hit the key to enter an entrance.
+        If there is an entrance at the position of the player, that entrance is returned.
+        If there is not an entrance, None will be returned.
+        :param gtg: The game object
+        :return:    The Entrance
+        """
         for entrance in self.entrances_and_exits:
             if entrance.pos_y == gtg.player.pos_y and entrance.pos_x == gtg.player.pos_x:
                 return entrance
         return None
 
-    def set_visible_to_player(self, brezel):
-        self.visible_to_player = brezel.brezelheimable
-
-    def set_visible_to_npc(self, brezel):
-        self.visible_to_npc = brezel.brezelheimable
+    def set_visible_to_player(self, brezelheim):
+        """
+        This method saves the area the player sees.
+        :param brezelheim:  The brezelheim object of the game
+        :return:            Nothing
+        """
+        self.visible_to_player = brezelheim.brezelheimable
 
     def build_map_colour(self, gtg):
+        """
+        This method handles the calculation of FOV of every entity and the colours in which the level will be shown.
+        :param gtg: The game object
+        :return:    Nothing
+        """
         gtg.brezelheim.reset_brezelheim(self)
         self.reset_colours(gtg.colours)
 
@@ -110,11 +147,15 @@ class Map:
         gtg.brezelheim.reset_brezelheim(self)
 
         self.calculate_npcs_fov(gtg.brezelheim)
-        # self.set_visible_to_npc(brezel)
 
         self.colour_level(gtg)
 
     def calculate_npcs_fov(self, brezelheim):
+        """
+        Calculates the FOV of every NPC on this level.
+        :param brezelheim:  The brezelheim object of the game
+        :return:            Nothing
+        """
         for npc in self.npcs:
             if npc.is_alive:
                 brezelheim.reset_brezelheim(self)
@@ -122,12 +163,17 @@ class Map:
                 npc.visible = brezelheim.brezelheimable
 
     def colour_level(self, gtg):
+        """
+        After all the FOV calculation, this method will set the colours for the current frame.
+        :param gtg: The game object
+        :return:    Nothing
+        """
         for pos_y in range(self.len_y):
             for pos_x in range(self.len_x):
                 if self.visible_to_player[pos_y][pos_x]:
+                    self.discovered[pos_y][pos_x] = True
                     if not gtg.player.drugged:
                         self.colours[pos_y][pos_x] = gtg.colours.get_colour("white")
-                        self.discovered[pos_y][pos_x] = True
 
                         for npc in self.npcs:
                             if npc.is_alive() and not npc.invisible and \
@@ -137,10 +183,15 @@ class Map:
                                 self.colours[pos_y][pos_x] = gtg.colours.get_colour("yellow")
                     else:
                         self.colours[pos_y][pos_x] = gtg.colours.get_random_colour(gtg.rng, True)
-                        self.discovered[pos_y][pos_x] = True
-
 
     def is_walkable(self, pos_y, pos_x):
+        """
+        Checks if the targeted tile is walkable.
+        :param pos_y:   y-coordinate of the targeted tile.
+        :param pos_x:   x-coordinate of the targeted tile.
+        :return:        True, if walkable
+                        False, if not
+        """
         if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
             try:
                 if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
@@ -158,15 +209,27 @@ class Map:
             return False
 
     def is_visible(self, pos_y, pos_x):
+        """
+        Checks if the targeted tile can be seen through.
+        :param pos_y:   y-coordinate of the targeted tile.
+        :param pos_x:   x-coordinate of the targeted tile.
+        :return:        True, if possible
+                        False, if not
+        """
         if self.len_y > pos_y >= 0 and self.len_x > pos_x >= 0:
             if self.level_objects[pos_y][pos_x] in self.walkable_level_objects:
                 for door in self.doors:
-                    if door.pos_y == pos_y and door.pos_x == pos_x and door.state == "closed":
+                    if door.confirm_pos(pos_y, pos_x) and door.state == "closed":
                         return False
                 return True
         return False
 
     def npc_actions(self, gtg):
+        """
+        Takes care of all the actions that all the NPCs on this map will perform.
+        :param gtg:     The game object
+        :return:        Nothing
+        """
         for npc in self.npcs:
             if gtg.player.has_moved and npc.hit_by_player:
                 npc.hit_by_player = False
@@ -177,6 +240,12 @@ class Map:
                     npc.move(gtg.player, self)
 
     def door_actions(self, gtg, pressed_key):
+        """
+        This function opens or closes all doors around the player.
+        :param gtg:         The game object
+        :param pressed_key: Open or close door command
+        :return:
+        """
         result = -1
         for y in range(gtg.player.pos_y - 1, gtg.player.pos_y + 2):
             for x in range(gtg.player.pos_x - 1, gtg.player.pos_x + 2):
@@ -186,6 +255,12 @@ class Map:
         return result
 
     def auto_toggle(self, gtg, pressed_key):
+        """
+        If the player couldn't move, this method checks if there is a door that can be opened instead.
+        :param gtg:         The game object
+        :param pressed_key: The direction key
+        :return:
+        """
         pos_y, pos_x = gtg.keys.get_direction_value(pressed_key, gtg.player.pos_y, gtg.player.pos_x)
         for door in self.doors:
             if door.confirm_pos(pos_y, pos_x) and door.state == "closed":
