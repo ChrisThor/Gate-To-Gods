@@ -18,6 +18,11 @@ import time
 
 class GateToGods:
     def __init__(self, seed: int, log_filename: str):
+        """
+        Initializes the game
+        :param seed:
+        :param log_filename:
+        """
         self.maps = []
         self.default_entities = []
         self.user_input = ""
@@ -40,6 +45,11 @@ class GateToGods:
         self.log_file = None
 
     def read_units_dat(self):
+        """
+        This function opens and reads the "units.dat" file, which contains all information regarding entities.
+        Exits the game if a definition is wrong or incomplete.
+        :return: Nothing
+        """
         try:
             units_file = open("data/units.dat", "r")
             valid_units_file = True
@@ -136,16 +146,31 @@ class GateToGods:
             exit(-1)
 
     def set_entity(self, entity_id, pos_y, pos_x):
+        """
+        Creates an entity based on their ID and a given position.
+        :param entity_id:   ID of the entity, defined in "units.dat"
+        :param pos_y:       y-coordinate of the entity
+        :param pos_x:       x-coordinate of the entity
+        :return:            The entity that is created or None if the entity is not defined in "units.dat"
+        """
         for entity in self.default_entities:
             if entity.entity_id == entity_id:
                 return entity.create(pos_y, pos_x)
         return None
 
     def prepare_new_map(self):
+        """
+        When starting the game, it is required to calculate the colours before the main loop is entered.
+        :return: Nothing
+        """
         self.brezelheim.reset_brezelheim(self.current_level)
         self.current_level.build_map_colour(self)
 
     def play(self):
+        """
+        This method handles the main loop of the game, including procession of player input and everything else.
+        :return:
+        """
         playing = True
         skip_npc_turn = False
         record = False
@@ -163,12 +188,12 @@ class GateToGods:
             status_effects.remove_status_effects(self)
 
             input_delay.apply_delay(self.configurations["input_delay"], last_input_time)
+            last_input_time = time.time()
             self.user_input = readchar.readkey()
             # try:
             #     self.user_input = input()[0]
             # except IndexError:
             #     self.user_input = " "
-            last_input_time = time.time()
 
             playing, skip_npc_turn = self.player_turn(playing, skip_npc_turn)
             if playing:
@@ -185,6 +210,12 @@ class GateToGods:
                     pass
 
     def player_turn(self, playing: bool, skip_npc_turn: bool):
+        """
+        Selects an action based on the player's input
+        :param playing:
+        :param skip_npc_turn:
+        :return:
+        """
         if self.user_input == self.keys.exit_game:
             playing = False
         elif self.user_input == self.keys.open_door or self.user_input == self.keys.close_door:
@@ -209,34 +240,66 @@ class GateToGods:
 
 
 def interpret_parameters():
+    """
+    This function reads additional parameters.
+
+    Currently possible are the following parameters:
+        - "-log" or "-l": This parameter activates logging of the screen. A following parameter is required, which
+                          contains the filename in which the log will be saved.
+        - "-view" or "-v": This parameter will read the log file (next parameter).
+        - "-seed" or "-s": This parameter sets a seed for the Random Number Generator. Using the same seed will always
+                           lead to the same results.
+    :return:
+    """
     filename = ""
     set_seed = time.time()
     save_replay = False
     play_replay = False
-    for instance in range(len(sys.argv)):
-        if sys.argv[instance] == "-log" or sys.argv[instance] == "-l":
-            filename = sys.argv[instance + 1]
+    for parameter_number in range(len(sys.argv)):
+        if sys.argv[parameter_number] == "-log" or sys.argv[parameter_number] == "-l":
+            filename = sys.argv[parameter_number + 1]
             save_replay = True
-        elif sys.argv[instance] == "-view" or sys.argv[instance] == "-v":
-            filename = sys.argv[instance + 1]
+        elif sys.argv[parameter_number] == "-view" or sys.argv[parameter_number] == "-v":
+            filename = sys.argv[parameter_number + 1]
             play_replay = True
-        elif sys.argv[instance] == "-seed" or sys.argv[instance] == "-s":
+        elif sys.argv[parameter_number] == "-seed" or sys.argv[parameter_number] == "-s":
             try:
-                set_seed = int(sys.argv[instance + 1])
+                set_seed = int(sys.argv[parameter_number + 1])
             except ValueError:
                 pass
     return save_replay, play_replay, filename, set_seed
 
 
 def get_level_file_name(language):
+    """
+    The first parameter is required to be the level that will be loaded while entering the game. This function extracts
+    that parameter and returns it.
+    :param language:    The language object of the game. Is used here to display an error message.
+    :return:
+    """
     if len(sys.argv) > 1:
         return sys.argv[1]
     else:
         print(language.texts.get("no_level_parameter", language.undefined))
-        exit(0)
+        exit(-1)
 
 
-def read_configuration_file():
+def read_configuration_file() -> dict:
+    """
+    This function requires the file "config.txt" in the folder "data".
+    It contains the following information:
+        - The language file that will be loaded.
+          Default: "language_file=en_en.txt"
+        - The screen height is used to define the height of the area in which the level will be displayed.
+          Default: "screen_height=21"
+        - The screen width is used to define the width of the area in which the level will be displayed.
+          Default: "screen_width=81"
+        - The input delay is used to make movement slower and more predictable. It defines the minimum period of time
+          (in seconds) that is required to pass until the next input will be read.
+          Default: "input_delay=0.1625"
+
+    :return:
+    """
     config = None
     error_text = "Error in \"config.txt\": Please check the line containing "
     configurations = {}
@@ -252,25 +315,25 @@ def read_configuration_file():
             try:
                 configurations["language_file"] = line.split("=")[1].replace("\n", "")
             except IndexError:
-                print(error_text + "\"language_file\"")
+                print(f"{error_text}\"language_file\"")
                 exit(-1)
         elif "screen_height" in line:
             try:
                 configurations["screen_height"] = int(line.split("=")[1])
             except ValueError or IndexError:
-                print(error_text + "\"screen_height\"")
+                print(f"{error_text}\"screen_height\"")
                 exit(-1)
         elif "screen_width" in line:
             try:
                 configurations["screen_width"] = int(line.split("=")[1])
             except ValueError or IndexError:
-                print(error_text + "\"screen_width\"")
+                print(f"{error_text}\"screen_width\"")
                 exit(-1)
         elif "input_delay" in line:
             try:
                 configurations["input_delay"] = float(line.split("=")[1])
             except ValueError or IndexError:
-                print(error_text + "\"input_delay\"")
+                print(f"{error_text}\"input_delay\"")
                 exit(-1)
 
     if len(configurations) < 4:
