@@ -10,18 +10,12 @@ Person:
   fieldOfVision: 3
   hostile: false
   name: Person
-  effects:
-    - SlowHealing
-    - SmallDamageBoost
-    - Invincibility
 PrairieDog:
   healthPoints: 20
   damage: (1/2)
   fieldOfVision: 4
   hostile: true
   name: Präriehund
-  effects:
-    - 75Accuracy
 Drunkard:
   healthPoints: 10
   damage: (1)
@@ -29,10 +23,6 @@ Drunkard:
   hostile: true
   name: Betrunkener
   accuracy: 0.5
-  effects:
-    - Invisibility
-    - Poison
-    - Drugged
 RagedDrunkard:
   healthPoints: 10
   damage: (1/3)
